@@ -38,8 +38,6 @@ Available values:
 
 ***Archiving Years Options***
 
-We recommend using a dropdown for this as there is gaps in the accepted values.
-
 | Value | Description |
 |-|-|
 | `1` | `1 Year` |
