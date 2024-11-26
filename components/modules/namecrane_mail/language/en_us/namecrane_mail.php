@@ -37,6 +37,7 @@ $lang['NamecraneMail.manage.module_groups.no_results'] = 'There is no Server Gro
 $lang['NamecraneMail.tabs.resource_usage'] = 'Resource Usage';
 $lang['NamecraneMail.tabs.dns_records'] = 'DNS Records';
 $lang['NamecraneMail.tabs.login_to_spamexperts'] = 'Login to SpamExperts';
+$lang['NamecraneMail.tabs.webmail_login'] = 'Login to Webmail / Admin';
 
 // Add row
 $lang['NamecraneMail.add_row.box_title'] = 'Namecrane Mail - Add Server';

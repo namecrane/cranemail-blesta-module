@@ -789,7 +789,8 @@ class NamecraneMail extends Module {
 
     $tabs = [
       'getResourceUsage'  => Language::_('NamecraneMail.tabs.resource_usage', true),
-      'getDNSSettings'    => Language::_('NamecraneMail.tabs.dns_records', true)
+      'getDNSSettings'    => Language::_('NamecraneMail.tabs.dns_records', true),
+      'webmailLogin'      => Language::_('NamecraneMail.tabs.webmail_login', true),
     ];
 
     if($package->meta->spamexperts) {
@@ -900,6 +901,15 @@ class NamecraneMail extends Module {
     return $this->view->fetch();
 
   }
+
+  public function webmailLogin($package, $service, array $get = null, array $post = null, array $files = null) {
+
+    header('Location: https://workspace.org/');
+
+    exit();
+
+  }
+
 
   // Validation
 
