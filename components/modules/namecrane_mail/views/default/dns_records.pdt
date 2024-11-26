@@ -1,0 +1,38 @@
+<table class="table">
+  <tbody>
+    <tr class="heading_row">
+      <td>Type</td>
+      <td>Name / Host</td>
+      <td>Value</td>
+    </tr>
+    <?php foreach($dns as $record) { ?>
+      <tr>
+        <td><?=$record['type']?></td>
+        <td><?=$record['record']?><?php if ($record['record'] == '@') { ?> or <?=$service_fields->domain?>.<?php } ?></td>
+        <td>
+          <code><?=$record['value']?></code>
+          <?php if ($record['prio']) { ?> (priority: <code><?=$record['prio']?>)</code><?php } ?>
+        </td>
+      </tr>
+    <?php } ?>
+  </tbody>
+</table>
+<?php if ($dkim) { ?>
+<br />
+<table class="table">
+  <tbody>
+    <tr class="heading_row">
+      <td>Type</td>
+      <td>Name / Host</td>
+    </tr>
+      <td>TXT</td>
+      <td><?=$dkim['selector']?></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <textarea style="width: 100%;" rows="6" disabled>v=DKIM1;k=rsa;h=<?=$dkim['algo']?>;p=<?=$dkim['key']?></textarea>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<?php } ?>

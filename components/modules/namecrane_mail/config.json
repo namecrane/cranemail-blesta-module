@@ -1,0 +1,27 @@
+{
+    "version": "1.0.0",
+    "name": "NamecraneMail.name",
+    "description": "NamecraneMail.description",
+    "authors": [
+        {
+            "name": "Namecrane LLC",
+            "url": "https://namecrane.com"
+        }
+    ],
+    "module": {
+        "row": "NamecraneMail.module_row",
+        "rows": "NamecraneMail.module_row_plural",
+        "group": "NamecraneMail.module_group",
+        "row_key": "server_name"
+    },
+    "package": {
+        "name_key": "diskspace"
+    },
+    "service": {
+        "name_key": "domain"
+    },
+    "email_tags": {
+        "package": ["diskspace","userlimit","useraliaslimit","domainaliaslimit","spamexperts"],
+        "service": ["domain", "username", "password"]
+    }
+}

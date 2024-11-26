@@ -1,0 +1,39 @@
+<table class="table">
+  <tbody>
+    <tr class="heading_row">
+        <td class="border_none">Resource</td>
+        <td>Usage</td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Disk Space</td>
+        <td align="left"><?=($info['diskusage'] / 1024);?> GB / <strong><?=($info['disklimit'] / 1024)?> GB</strong></td></tr>
+    <tr>
+        <td class="fieldarea">Email Users</td>
+        <td align="left"><?=$info['usercount']?> / <strong><?=($info['userlimit'] ? $info['userlimit'] : '&infin;')?></strong></td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Email Aliases</td>
+        <td align="left"><?=$info['useraliascount']?> / <strong><?=($info['useraliaslimit'] ? $info['useraliaslimit'] : '&infin;')?></strong></td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Domain Aliases</td>
+        <td align="left"><?=$info['domainaliascount']?> / <strong><?=($info['domainaliaslimit'] ? $info['domainaliaslimit'] : '&infin;')?></strong></td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Spamexperts Status</td>
+        <td align="left"><strong><?=($info['spamexperts'] ? 'Enabled' : 'Disabled')?></strong></td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Email Archives</td>
+        <td align="left"><strong><?=($info['archive_years'] ? 'Enabled' : 'Disabled')?></strong></td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Archive Direction</td>
+        <td align="left"><strong><?=($info['archive_years'] ? $info['archive_direction'] : 'N/A')?></strong></td>
+    </tr>
+    <tr>
+        <td class="fieldarea">Last Updated</td>
+        <td align="left"><strong><?=$info['lastupdated']?></strong></td>
+    </tr>
+  </tbody>
+</table>
