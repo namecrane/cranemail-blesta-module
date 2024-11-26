@@ -30,7 +30,7 @@ Available values:
 | `userlimit` | `User Emails` | `quantity` | How many email accounts the domain may have |
 | `disklimit` | `Disk Storage (GB)` | `quantity` | Total disk storage available (GB) |
 | `useraliaslimit` | `User Aliases` | `quantity` | How many email aliases the domain may have | 
-| `spamexperts` | `Spamexperts` | `checkbox` | How many email accounts the domain may have | 
+| `spamexperts` | `Spamexperts` | `checkbox` | Enable SpamExperts anti spam filtering on the domain | 
 | `domainaliaslimit` | `Domain Aliases` | `quantity` | How many domain aliases the domain may have |
 | `archive_years` | `Email Archiving (years)` | `dropdown` | How many years to archive emails for |
 | `archive_direction` | `Email Archiving Direction` | `dropdown` (values `in`, `out,` `inout`) | Archive incoming, outgoing, or both, emails |
