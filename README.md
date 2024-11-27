@@ -34,8 +34,8 @@ Available values:
 | `domainaliaslimit` | `Domain Aliases` | `quantity` | How many domain aliases the domain may have |
 | `archive_years` | `Email Archiving (years)` | `dropdown` | How many years to archive emails for |
 | `archive_direction` | `Email Archiving Direction` | `dropdown` (values `in`, `out,` `inout`) | Archive incoming, outgoing, or both, emails |
-| `filestorage` | `filestorage\|Online Web Drive` | `yesno` | Enable the online File Storage & Sharing |
-| `office` | `office\|Office Suite` | `yesno` | Enable the online Document creating & editing feature suite |
+| `filestorage` | `filestorage\|Online Web Drive` | `checkbox` | Enable the online File Storage & Sharing |
+| `office` | `office\|Office Suite` | `checkbox` | Enable the online Document creating & editing feature suite |
 
 ***Archiving Years Options***
 
