@@ -47,10 +47,10 @@ Available values:
 | `4` | `4 Years` |
 | `5` | `5 Years` |
 | `6` | `6 Years` |
-| `1` | `7 Years` |
-| `1` | `8 Years` |
-| `1` | `9 Years` |
-| `1` | `10 Years` |
+| `7` | `7 Years` |
+| `8` | `8 Years` |
+| `9` | `9 Years` |
+| `10` | `10 Years` |
 | `15` | `15 Years` |
 | `20` | `20 Years` |
 
