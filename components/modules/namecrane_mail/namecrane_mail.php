@@ -759,7 +759,7 @@ class NamecraneMail extends Module {
     $tabs = [
       'getResourceUsage'  => Language::_('NamecraneMail.tabs.resource_usage', true),
       'getDNSSettings'    => Language::_('NamecraneMail.tabs.dns_records', true),
-      'webmailLogin'      => Language::_('NamecraneMail.tabs.webmail_login', true),
+      'loginDetails'      => Language::_('NamecraneMail.tabs.login_details', true),
     ];
 
     if($package->meta->spamexperts) {
@@ -877,11 +877,20 @@ class NamecraneMail extends Module {
 
   }
 
-  public function webmailLogin($package, $service, array $get = null, array $post = null, array $files = null) {
+  public function loginDetails($package, $service, array $get = null, array $post = null, array $files = null) {
 
-    header('Location: https://workspace.org/');
+    $row            = $this->getModuleRow();
+    $service_fields = $this->serviceFieldsToObject($service->fields);
 
-    exit();
+    Loader::loadHelpers($this, [ 'Form', 'Html' ]);
+
+    $this->view = new View('login_details', 'default');
+    $this->view->base_uri = $this->base_uri;
+    $this->view->setDefaultView('components' . DS . 'modules' . DS . 'namecrane_mail' . DS);
+
+    $this->view->set('service_fields', $service_fields);
+
+    return $this->view->fetch();
 
   }
 

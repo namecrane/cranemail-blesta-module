@@ -37,7 +37,7 @@ $lang['NamecraneMail.manage.module_groups.no_results'] = 'There is no Server Gro
 $lang['NamecraneMail.tabs.resource_usage'] = 'Resource Usage';
 $lang['NamecraneMail.tabs.dns_records'] = 'DNS Records';
 $lang['NamecraneMail.tabs.login_to_spamexperts'] = 'Login to SpamExperts';
-$lang['NamecraneMail.tabs.webmail_login'] = 'Login to Webmail / Admin';
+$lang['NamecraneMail.tabs.login_details'] = 'Login Details';
 
 // Add row
 $lang['NamecraneMail.add_row.box_title'] = 'Namecrane Mail - Add Server';
@@ -61,6 +61,7 @@ $lang['NamecraneMail.row_meta.tooltip.api_key'] = 'API Key found inside of the N
 // Errors
 $lang['NamecraneMail.!error.server_name.valid'] = 'Invalid Server Name';
 $lang['NamecraneMail.!error.api_key.valid'] = 'Invalid API Key';
+$lang['NamecraneMail.!error.domain.valid'] = 'Invalid Domain';
 $lang['NamecraneMail.!error.module_row.missing'] = 'An internal error occurred. The module row is unavailable.';
 $lang['NamecraneMail.!error.disklimit.valid'] = 'Disk Space must be a positive whole integer.';
 $lang['NamecraneMail.!error.userlimit.valid'] = 'Max Email Users be a positive whole integer.';
@@ -107,5 +108,9 @@ $lang['NamecraneMail.resource_usage.email_archives.direction.in'] = 'Incoming';
 $lang['NamecraneMail.resource_usage.email_archives.direction.out'] = 'Outgoing';
 $lang['NamecraneMail.resource_usage.email_archives.direction.inout'] = 'Incoming + Outgoing';
 $lang['NamecraneMail.resource_usage.last_updated'] = 'Last Updated';
+
+// Buttons
+
+$lang['NamecraneMail.button.login_portal'] = 'Login Now';
 
 // Cron Tasks

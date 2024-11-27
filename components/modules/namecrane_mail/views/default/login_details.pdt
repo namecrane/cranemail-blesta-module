@@ -1,0 +1,27 @@
+<div class="table-responsive">
+
+    <h4><?=$this->_('NamecraneMail.tabs.login_details')?></h4>
+
+    <table class="table table-curved table-striped">
+        <thead>
+            <tr>
+                <th colspan="2"><?=$this->_('NamecraneMail.tabs.login_details')?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?=$this->_('NamecraneMail.service_fields.username')?></td>
+                <td><?=(isset($service_fields->namecrane_mail_username) ? $service_fields->namecrane_mail_username : null)?></td>
+            </tr>
+            <tr>
+                <td><?=$this->_('NamecraneMail.service_fields.password')?></td>
+                <td><?=(isset($service_fields->namecrane_mail_password) ? $service_fields->namecrane_mail_password : null)?></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br />
+
+    <a href="https://workspace.org/" class="btn btn-med btn-primary" target="_blank"><?=$this->_('NamecraneMail.button.login_portal')?></a>
+
+</div>
