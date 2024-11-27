@@ -421,6 +421,34 @@ class NamecraneMail extends Module {
 
     $fields->setField($spamexperts_adminaccess);
 
+    // file storage
+
+    $filestorage = $fields->label(Language::_('NamecraneMail.package_fields.filestorage', true), 'namecrane_mail_filestorage');
+    $filestorage->attach(
+      $fields->fieldCheckbox(
+        'meta[filestorage]',
+        'true',
+        (isset($vars->meta['filestorage']) ? $vars->meta['filestorage'] : null) == 'true',
+        ['id' => 'namecrane_mail_filestorage']
+      )
+    );
+
+    $fields->setField($filestorage);
+
+    // office
+    
+    $office = $fields->label(Language::_('NamecraneMail.package_fields.office', true), 'namecrane_mail_office');
+    $office->attach(
+      $fields->fieldCheckbox(
+        'meta[office]',
+        'true',
+        (isset($vars->meta['office']) ? $vars->meta['office'] : null) == 'true',
+        ['id' => 'namecrane_mail_office']
+      )
+    );
+
+    $fields->setField($office);
+
     return $fields;
 
   }
@@ -446,7 +474,9 @@ class NamecraneMail extends Module {
         'spamexperts_adminaccess' => (isset($vars['configoptions']['spamexperts_adminaccess']) ? $vars['configoptions']['spamexperts_adminaccess'] : $package->meta->spamexperts_adminaccess),
         'domainaliaslimit'        => (isset($vars['configoptions']['domainaliaslimit']) ? $vars['configoptions']['domainaliaslimit'] : $package->meta->domainaliaslimit),
         'archive_years'           => (isset($vars['configoptions']['archive_years']) ? $vars['configoptions']['archive_years'] : $package->meta->archive_years),
-        'archive_direction'       => (isset($vars['configoptions']['archive_direction']) ? $vars['configoptions']['archive_direction'] : $package->meta->archive_direction)
+        'archive_direction'       => (isset($vars['configoptions']['archive_direction']) ? $vars['configoptions']['archive_direction'] : $package->meta->archive_direction),
+        'filestorage'             => (isset($vars['configoptions']['filestorage']) ? $vars['configoptions']['filestorage'] : $package->meta->filestorage),
+        'office'                  => (isset($vars['configoptions']['office']) ? $vars['configoptions']['office'] : $package->meta->office)
       ];
 
       $return = $api->execute('POST', 'domain/create', $post);
@@ -502,7 +532,9 @@ class NamecraneMail extends Module {
         'spamexperts_adminaccess' => (isset($vars['configoptions']['spamexperts_adminaccess']) ? $vars['configoptions']['spamexperts_adminaccess'] : $package->meta->spamexperts_adminaccess),
         'domainaliaslimit'        => (isset($vars['configoptions']['domainaliaslimit']) ? $vars['configoptions']['domainaliaslimit'] : $package->meta->domainaliaslimit),
         'archive_years'           => (isset($vars['configoptions']['archive_years']) ? $vars['configoptions']['archive_years'] : $package->meta->archive_years),
-        'archive_direction'       => (isset($vars['configoptions']['archive_direction']) ? $vars['configoptions']['archive_direction'] : $package->meta->archive_direction)
+        'archive_direction'       => (isset($vars['configoptions']['archive_direction']) ? $vars['configoptions']['archive_direction'] : $package->meta->archive_direction),
+        'filestorage'             => (isset($vars['configoptions']['filestorage']) ? $vars['configoptions']['filestorage'] : $package->meta->filestorage),
+        'office'                  => (isset($vars['configoptions']['office']) ? $vars['configoptions']['office'] : $package->meta->office)
       ];
 
       $return = $api->execute('POST', 'domain/modify', $post);
@@ -836,6 +868,12 @@ class NamecraneMail extends Module {
     $this->view->setDefaultView('components' . DS . 'modules' . DS . 'namecrane_mail' . DS);
 
     Loader::loadHelpers($this, ['Form', 'Html']);
+
+    if(!empty($stats['data']['data']['spamexperts_direction'])) {
+
+    } else {
+      $stats['data']['data']['spamexperts_direction'] = Language::_('NamecraneMail.tabs.webmail_login', true);
+    }    
 
     $this->view->set('info', $stats['data']['data']);
     

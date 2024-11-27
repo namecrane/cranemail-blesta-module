@@ -91,5 +91,21 @@ $lang['NamecraneMail.package_fields.spamexperts'] = 'SpamExperts';
 $lang['NamecraneMail.package_fields.spamexperts_adminaccess'] = 'SpamExperts Administrator Access';
 $lang['NamecraneMail.package_fields.archive_years'] = 'Archive Years';
 $lang['NamecraneMail.package_fields.archive_direction'] = 'Archive Direction';
+$lang['NamecraneMail.package_fields.filestorage'] = 'File Storage';
+$lang['NamecraneMail.package_fields.office'] = 'Office Suite';
+
+$lang['NamecraneMail.resource_usage.diskspace'] = 'Disk Space';
+$lang['NamecraneMail.resource_usage.email_users'] = 'Email Users';
+$lang['NamecraneMail.resource_usage.email_aliases'] = 'Email Aliases';
+$lang['NamecraneMail.resource_usage.domain_aliases'] = 'Domain Aliases';
+$lang['NamecraneMail.resource_usage.filestorage'] = 'File Storage';
+$lang['NamecraneMail.resource_usage.office'] = 'Office Suite';
+$lang['NamecraneMail.resource_usage.spamexperts.status'] = 'SpamExperts';
+$lang['NamecraneMail.resource_usage.email_archives.status'] = 'Email Archiving Status';
+$lang['NamecraneMail.resource_usage.email_archives.direction'] = 'Archiving Direction';
+$lang['NamecraneMail.resource_usage.email_archives.direction.in'] = 'Incoming';
+$lang['NamecraneMail.resource_usage.email_archives.direction.out'] = 'Outgoing';
+$lang['NamecraneMail.resource_usage.email_archives.direction.inout'] = 'Incoming + Outgoing';
+$lang['NamecraneMail.resource_usage.last_updated'] = 'Last Updated';
 
 // Cron Tasks
