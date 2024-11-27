@@ -14,14 +14,11 @@
         "group": "NamecraneMail.module_group",
         "row_key": "server_name"
     },
-    "package": {
-        "name_key": "diskspace"
-    },
     "service": {
-        "name_key": "domain"
+        "name_key": "namecrane_mail_domain"
     },
     "email_tags": {
         "package": ["diskspace","userlimit","useraliaslimit","domainaliaslimit","spamexperts"],
-        "service": ["domain", "username", "password"]
+        "service": ["namecrane_mail_domain", "namecrane_mail_username", "namecrane_mail_password"]
     }
 }

@@ -15,7 +15,7 @@ class NamecraneMail extends Module {
     // Load module config
     $this->loadConfig(dirname(__FILE__) . DS . 'config.json');
 
-    Configure::load('namecrane_mail', dirname(__FILE__) . DS . 'config' . DS);
+    //Configure::load('namecrane_mail', dirname(__FILE__) . DS . 'config' . DS);
 
   }
 
@@ -41,18 +41,6 @@ class NamecraneMail extends Module {
 
     Loader::loadHelpers($this, ['Form', 'Html', 'Widget']);
 
-    if (!empty($vars)) {
-
-      $checkbox_fields = [ ];
-
-      foreach ($checkbox_fields as $checkbox_field) {
-        if (!isset($vars[$checkbox_field])) {
-          $vars[$checkbox_field] = 'false';
-        }
-      }
-
-    }
-
     $this->view->set('vars', (object) $vars);
 
     return $this->view->fetch();
@@ -69,16 +57,6 @@ class NamecraneMail extends Module {
 
       if (empty($vars)) {
         $vars = $module_row->meta;
-      } else {
-
-        $checkbox_fields = [];
-
-        foreach ($checkbox_fields as $checkbox_field) {
-          if (!isset($vars[$checkbox_field])) {
-            $vars[$checkbox_field] = 'false';
-          }
-        }
-
       }
 
     $this->view->set('vars', (object) $vars);
@@ -91,15 +69,6 @@ class NamecraneMail extends Module {
 
     $meta_fields = [ 'server_name', 'api_key' ];
     $encrypted_fields = [];
-
-    // Set unset checkboxes
-    $checkbox_fields = [];
-
-    foreach ($checkbox_fields as $checkbox_field) {
-      if (!isset($vars[$checkbox_field])) {
-        $vars[$checkbox_field] = 'false';
-      }
-    }
 
     $this->Input->setRules($this->getRowRules($vars));
 
@@ -127,16 +96,8 @@ class NamecraneMail extends Module {
 
   public function editModuleRow($module_row, array &$vars) {
 
-    $meta_fields = ['server_name', 'api_key'];
+    $meta_fields = [ 'server_name', 'api_key' ];
     $encrypted_fields = [];
-
-    $checkbox_fields = [];
-
-    foreach ($checkbox_fields as $checkbox_field) {
-      if (!isset($vars[$checkbox_field])) {
-        $vars[$checkbox_field] = 'false';
-      }
-    }
 
     $this->Input->setRules($this->getRowRules($vars));
 
@@ -264,7 +225,7 @@ class NamecraneMail extends Module {
       ],
       'meta[spamexperts]' => [
         'valid' => [
-          'rule'    => true,
+          'rule'    => [ 'in_array', [ 0, 1 ] ],
           'message' => Language::_('NamecraneMail.!error.spamexperts.valid', true)
         ]
       ],
@@ -279,10 +240,44 @@ class NamecraneMail extends Module {
           'rule'    => [ 'in_array', [ 'in', 'out', 'inout' ] ],
           'message' => Language::_('NamecraneMail.!error.archive_direction.valid', true)
         ]
+      ],
+      'meta[filestorage]' => [
+        'valid' => [
+          'rule'    => [ 'in_array', [ 0, 1 ] ],
+          'message' => Language::_('NamecraneMail.!error.filestorage.valid', true)
+        ]
+      ],
+      'meta[office]' => [
+        'valid' => [
+          'rule'    => [ 'in_array', [ 0, 1 ] ],
+          'message' => Language::_('NamecraneMail.!error.office.valid', true)
+        ]
       ]
     ];
 
     return $rules;
+
+  }
+
+  public function getServiceName($service) {
+
+    foreach($service->fields as $field) {
+      if($field->key == 'namecrane_mail_domain') {
+        return strtolower($field->value);
+      }
+    }
+
+    return null;
+
+  }
+
+  public function getPackageServiceName($package, $vars = null) {
+
+    if(isset($vars['namecrane_mail_domain'])) {
+      return strtolower($vars['namecrane_mail_domain']);
+    }
+
+    return null;
 
   }
 
@@ -394,9 +389,12 @@ class NamecraneMail extends Module {
 
     $spamexperts = $fields->label(Language::_('NamecraneMail.package_fields.spamexperts', true), 'namecrane_mail_spamexperts');
     $spamexperts->attach(
-      $fields->fieldCheckbox(
+      $fields->fieldSelect(
         'meta[spamexperts]',
-        'true',
+        [
+          '0' => 'Disabled',
+          '1' => 'Enabled'
+        ],
         (isset($vars->meta['spamexperts']) ? $vars->meta['spamexperts'] : null) == 'true',
         ['id' => 'namecrane_mail_spamexperts']
       )
@@ -425,9 +423,12 @@ class NamecraneMail extends Module {
 
     $filestorage = $fields->label(Language::_('NamecraneMail.package_fields.filestorage', true), 'namecrane_mail_filestorage');
     $filestorage->attach(
-      $fields->fieldCheckbox(
+      $fields->fieldSelect(
         'meta[filestorage]',
-        'true',
+        [
+          '0' => 'Disabled',
+          '1' => 'Enabled'
+        ],
         (isset($vars->meta['filestorage']) ? $vars->meta['filestorage'] : null) == 'true',
         ['id' => 'namecrane_mail_filestorage']
       )
@@ -439,9 +440,12 @@ class NamecraneMail extends Module {
     
     $office = $fields->label(Language::_('NamecraneMail.package_fields.office', true), 'namecrane_mail_office');
     $office->attach(
-      $fields->fieldCheckbox(
+      $fields->fieldSelect(
         'meta[office]',
-        'true',
+        [
+          '0' => 'Disabled',
+          '1' => 'Enabled'
+        ],
         (isset($vars->meta['office']) ? $vars->meta['office'] : null) == 'true',
         ['id' => 'namecrane_mail_office']
       )
@@ -453,78 +457,69 @@ class NamecraneMail extends Module {
 
   }
 
-  public function addService($package, array $vars = null, $parent_package = null, $parent_service = null, $status = 'pending') {
+  public function validateService($package, array $vars = null) {
+    $this->Input->setRules($this->getServiceRules($vars));
+    return $this->Input->validates($vars);
+  }
 
-    $this->validateService($package, $vars);
+  private function getServiceRules(array $vars = null, $edit = false) {
 
-    if ($this->Input->errors()) {
-      return;
-    }
-
-    if ($vars['use_module'] == 'true' && $row = $this->getModuleRow()) {
-
-      $api = $this->getApi($row->meta->api_key);
-
-      $post = [
-        'domain'                  => $vars['domain'],
-        'disklimit'               => (isset($vars['configoptions']['disklimit']) ? $vars['configoptions']['disklimit'] : $package->meta->disklimit),
-        'userlimit'               => (isset($vars['configoptions']['userlimit']) ? $vars['configoptions']['userlimit'] : $package->meta->userlimit),
-        'useraliaslimit'          => (isset($vars['configoptions']['useraliaslimit']) ? $vars['configoptions']['useraliaslimit'] : $package->meta->useraliaslimit),
-        'spamexperts'             => (isset($vars['configoptions']['spamexperts']) ? $vars['configoptions']['spamexperts'] : $package->meta->spamexperts),
-        'spamexperts_adminaccess' => (isset($vars['configoptions']['spamexperts_adminaccess']) ? $vars['configoptions']['spamexperts_adminaccess'] : $package->meta->spamexperts_adminaccess),
-        'domainaliaslimit'        => (isset($vars['configoptions']['domainaliaslimit']) ? $vars['configoptions']['domainaliaslimit'] : $package->meta->domainaliaslimit),
-        'archive_years'           => (isset($vars['configoptions']['archive_years']) ? $vars['configoptions']['archive_years'] : $package->meta->archive_years),
-        'archive_direction'       => (isset($vars['configoptions']['archive_direction']) ? $vars['configoptions']['archive_direction'] : $package->meta->archive_direction),
-        'filestorage'             => (isset($vars['configoptions']['filestorage']) ? $vars['configoptions']['filestorage'] : $package->meta->filestorage),
-        'office'                  => (isset($vars['configoptions']['office']) ? $vars['configoptions']['office'] : $package->meta->office)
-      ];
-
-      $return = $api->execute('POST', 'domain/create', $post);
-
-      if(!$return['status']) {
-       
-        $this->Input->SetErrors([ 'api' => [ 'response' => $return['message'] ] ]);
-
-        return null;
-
-      }
-
-      return [
-        [
-          'key'       => 'domain',
-          'value'     => $vars['domain'],
-          'encrypted' => 0
-        ],
-        [
-          'key'       => 'username',
-          'value'     => $return['data']['username'],
-          'encrypted' => 0
-        ],
-        [
-          'key'       => 'password',
-          'value'     => $return['data']['password'],
-          'encrypted' => 1
+    $rules = [
+      'namecrane_mail_domain' => [
+        'format' => [
+          'rule'    => [[ $this, 'validateDomain' ]],
+          'message' => Language::_('NamecraneMail.!error.domain.valid', true)
         ]
-      ];
+      ],
+      'namecrane_mail_username' => [
+        'valid' => [
+          'rule'    => true,
+          'message' => Language::_('NamecraneMail.!error.username.valid', true)
+        ]
+      ],
+      'namecrane_mail_password' => [
+        'valid' => [
+          'rule'    => true,
+          'message' => Language::_('NamecraneMail.!error.password.valid', true)
+        ]
+      ]
+    ];
 
-    }
+    return $rules;
 
   }
 
+  public function addService($package, array $vars = null, $parent_package = null, $parent_service = null, $status = 'pending') {
+    return $this->processService('create', package: $package, vars: $vars, parent_package: $parent_package, parent_service: $parent_service);
+  }
+
   public function editService($package, $service, array $vars = null, $parent_package = null, $parent_service = null) {
+    return $this->processService('modify', package: $package, service: $service, vars: $vars, parent_package: $parent_package, parent_service: $parent_service);
+  }
+
+  public function processService($action, $package, $service = null, array $vars = null, $parent_package = null, $parent_service = null) {
 
     $this->validateService($package, $vars);
 
     if ($this->Input->errors()) {
       return;
     }
+
+    if($service) {
+      $service_fields = $this->serviceFieldsToObject($service->fields);
+    }
+
+    // should we allow the domain to be changed here? It doesn't run 'create', nor do
+    // we allow renaming via the API
+
+    $domain = ($action == 'modify' ? $service_fields->namecrane_mail_domain : $vars['namecrane_mail_domain']);
 
     if ($vars['use_module'] == 'true' && $row = $this->getModuleRow()) {
       
       $api = $this->getApi($row->meta->api_key);
 
       $post = [
-        'domain'                  => $vars['domain'],
+        'domain'                  => $domain,
         'disklimit'               => (isset($vars['configoptions']['disklimit']) ? $vars['configoptions']['disklimit'] : $package->meta->disklimit),
         'userlimit'               => (isset($vars['configoptions']['userlimit']) ? $vars['configoptions']['userlimit'] : $package->meta->userlimit),
         'useraliaslimit'          => (isset($vars['configoptions']['useraliaslimit']) ? $vars['configoptions']['useraliaslimit'] : $package->meta->useraliaslimit),
@@ -537,15 +532,31 @@ class NamecraneMail extends Module {
         'office'                  => (isset($vars['configoptions']['office']) ? $vars['configoptions']['office'] : $package->meta->office)
       ];
 
-      $return = $api->execute('POST', 'domain/modify', $post);
+      $return = $api->execute('POST', 'domain/' . $action, $post);
 
       if(!$return['status']) {
         $this->Input->SetErrors([ 'api' => [ 'response' => $return['message'] ] ]);
       }
 
-      return null;
-
     }
+    
+    return [
+      [
+        'key'       => 'namecrane_mail_domain',
+        'value'     => $domain,
+        'encrypted' => 0
+      ],
+      [
+        'key'       => 'namecrane_mail_username',
+        'value'     => ($vars['namecrane_mail_username'] ?? $return['data']['username']),
+        'encrypted' => 0
+      ],
+      [
+        'key'       => 'namecrane_mail_password',
+        'value'     => ($vars['namecrane_mail_password'] ?? $return['data']['password']),
+        'encrypted' => 1
+      ]
+    ];
 
   }
 
@@ -558,7 +569,7 @@ class NamecraneMail extends Module {
       $api = $this->getApi($row->meta->api_key);
 
       $post = [
-        'domain'  => $service_fields->domain
+        'domain'  => $service_fields->namecrane_mail_domain
       ];
     
       $return = $api->execute('POST', 'domain/suspend', $post);
@@ -583,7 +594,7 @@ class NamecraneMail extends Module {
       $api = $this->getApi($row->meta->api_key);
 
       $post = [
-        'domain'  => $service_fields->domain
+        'domain'  => $service_fields->namecrane_mail_domain
       ];
     
       $return = $api->execute('POST', 'domain/unsuspend', $post);
@@ -607,7 +618,7 @@ class NamecraneMail extends Module {
       $api = $this->getApi($row->meta->api_key);
 
       $post = [
-        'domain'  => $service_fields->domain
+        'domain'  => $service_fields->namecrane_mail_domain
       ];
     
       $return = $api->execute('POST', 'domain/delete', $post);
@@ -622,65 +633,12 @@ class NamecraneMail extends Module {
 
   }
 
-  public function validateService($package, array $vars = null) {
-      $this->Input->setRules($this->getServiceRules($vars));
-      return $this->Input->validates($vars);
-  }
-
-  public function validateServiceEdit($service, array $vars = null) {
-    $this->Input->setRules($this->getServiceRules($vars, true));
-    return $this->Input->validates($vars);
-  }
-
-  private function getServiceRules(array $vars = null, $edit = false) {
-
-    $rules = [
-      'domain' => [
-        'valid' => [
-          'if_set'  => $edit,
-          'rule'    => [[ $this, 'validateDomain' ]],
-          'message' => Language::_('NamecraneMail.!error.domain.valid', true)
-        ]
-      ],
-      'username' => [
-        'valid' => [
-          'if_set'  => $edit,
-          'rule'    => true,
-          'message' => Language::_('NamecraneMail.!error.username.valid', true)
-        ]
-      ],
-      'password' => [
-        'valid' => [
-          'if_set'  => $edit,
-          'rule'    => true,
-          'message' => Language::_('NamecraneMail.!error.password.valid', true)
-        ]
-      ]
-    ];
-
-    // Unset irrelevant rules when editing a service
-    if ($edit) {
-
-      $edit_fields = [];
-
-      foreach ($rules as $field => $rule) {
-        if (!in_array($field, $edit_fields)) {
-          unset($rules[$field]);
-        }
-      }
-
-    }
-
-    return $rules;
-
-  }
-
   public function changeServicePackage($package_from, $package_to, $service, $parent_package = null, $parent_service = null) {
 
     $service_fields = $this->serviceFieldsToObject($service->fields);
 
     $vars = [
-      'domain'      => $service_fields->domain,
+      'domain'      => $service_fields->namecrane_mail_domain,
       'use_module'  => true
     ];
 
@@ -711,13 +669,13 @@ class NamecraneMail extends Module {
     Loader::loadHelpers($this, ['Html']);
 
     $fields = new ModuleFields();
-
+    
     $domain = $fields->label(Language::_('NamecraneMail.service_fields.domain', true), 'namecrane_mail_domain');
 
     $domain->attach(
       $fields->fieldText(
-        'domain',
-        (isset($vars->domain) ? $vars->domain : null),
+        'namecrane_mail_domain',
+        (isset($vars->namecrane_mail_domain) ? $vars->namecrane_mail_domain : null),
         [ 'id' => 'namecrane_mail_domain' ]
       )
     );
@@ -729,7 +687,7 @@ class NamecraneMail extends Module {
   }
 
   public function getAdminEditFields($package, $vars = null) {
-
+    
     Loader::loadHelpers($this, ['Html']);
 
     $fields = new ModuleFields();
@@ -738,8 +696,8 @@ class NamecraneMail extends Module {
 
     $domain->attach(
       $fields->fieldText(
-        'domain',
-        (isset($vars->domain) ? $vars->domain : null),
+        'namecrane_mail_domain',
+        (isset($vars->namecrane_mail_domain) ? $vars->namecrane_mail_domain : null),
         [ 'id' => 'namecrane_mail_domain' ]
       )
     );
@@ -748,8 +706,8 @@ class NamecraneMail extends Module {
 
     $username->attach(
       $fields->fieldText(
-        'username',
-        (isset($vars->username) ? $vars->username : null),
+        'namecrane_mail_username',
+        (isset($vars->namecrane_mail_username) ? $vars->namecrane_mail_username : null),
         [ 'id' => 'namecrane_mail_username' ]
       )
     );
@@ -758,8 +716,8 @@ class NamecraneMail extends Module {
 
     $password->attach(
       $fields->fieldText(
-        'password',
-        (isset($vars->password) ? $vars->password : null),
+        'namecrane_mail_password',
+        (isset($vars->namecrane_mail_password) ? $vars->namecrane_mail_password : null),
         [ 'id' => 'namecrane_mail_password' ]
       )
     );
@@ -779,33 +737,12 @@ class NamecraneMail extends Module {
     $fields = new ModuleFields();
 
     $domain = $fields->label(Language::_('NamecraneMail.service_fields.domain', true), 'namecrane_mail_domain');
+
     $domain->attach(
       $fields->fieldText(
-        'domain',
-        (isset($vars->domain) ? $vars->domain : null),
-        ['id' => 'namecrane_mail_domain']
-      )
-    );
-
-    $fields->setField($domain);
-
-    return $fields;
-
-  }
-
-  public function getClientEditFields($package, $vars = null) {
-
-    Loader::loadHelpers($this, ['Html']);
-
-    $fields = new ModuleFields();
-
-    // Set the Domain field
-    $domain = $fields->label(Language::_('NamecraneMail.service_fields.domain', true), 'namecrane_mail_domain');
-    $domain->attach(
-      $fields->fieldText(
-        'domain',
-        (isset($vars->domain) ? $vars->domain : null),
-        ['id' => 'namecrane_mail_domain']
+        'namecrane_mail_domain',
+        (isset($vars->namecrane_mail_domain) ? $vars->namecrane_mail_domain : null),
+        [ 'id' => 'namecrane_mail_domain' ]
       )
     );
 
@@ -856,7 +793,7 @@ class NamecraneMail extends Module {
     $api = $this->getApi($row->meta->api_key);
 
     $post = [
-      'domain' => $service_fields->domain
+      'domain' => $service_fields->namecrane_mail_domain
     ];
   
     $stats = $api->execute('POST', 'domain/info', $post);
@@ -889,7 +826,7 @@ class NamecraneMail extends Module {
     $api = $this->getApi($row->meta->api_key);
 
     $post = [
-      'domain' => $service_fields->domain
+      'domain' => $service_fields->namecrane_mail_domain
     ];
   
     $stats = $api->execute('POST', 'domain/info', $post);
@@ -916,7 +853,7 @@ class NamecraneMail extends Module {
     $api = $this->getApi($row->meta->api_key);
 
     $post = [
-      'domain' => $service_fields->domain
+      'domain' => $service_fields->namecrane_mail_domain
     ];
   
     $sso = $api->execute('POST', 'spamexperts/login', $post);
