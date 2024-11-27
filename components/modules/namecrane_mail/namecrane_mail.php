@@ -15,7 +15,7 @@ class NamecraneMail extends Module {
     // Load module config
     $this->loadConfig(dirname(__FILE__) . DS . 'config.json');
 
-    //Configure::load('namecrane_mail', dirname(__FILE__) . DS . 'config' . DS);
+    Configure::load('namecrane_mail', dirname(__FILE__) . DS . 'config' . DS);
 
   }
 
@@ -172,7 +172,7 @@ class NamecraneMail extends Module {
   public function editPackage($package, array $vars = null) {
 
     $this->Input->setRules($this->getPackageRules($vars));
-
+    
     $meta = [];
 
     if ($this->Input->validates($vars)) {
@@ -243,13 +243,13 @@ class NamecraneMail extends Module {
       ],
       'meta[filestorage]' => [
         'valid' => [
-          'rule'    => [ 'in_array', [ 0, 1 ] ],
+          'rule'    => [ 'in_array', [ '0', '1' ] ],
           'message' => Language::_('NamecraneMail.!error.filestorage.valid', true)
         ]
       ],
       'meta[office]' => [
         'valid' => [
-          'rule'    => [ 'in_array', [ 0, 1 ] ],
+          'rule'    => [ 'in_array', [ '0', '1' ] ],
           'message' => Language::_('NamecraneMail.!error.office.valid', true)
         ]
       ]
@@ -360,7 +360,7 @@ class NamecraneMail extends Module {
           '15' => '15 Years',
           '20' => '20 Years'
         ],
-        (isset($vars->meta['archive_years']) ? $vars->meta['archive_years'] : null) == 'true',
+        (isset($vars->meta['archive_years']) ? $vars->meta['archive_years'] : null),
         ['id' => 'namecrane_mail_archive_years']
       )
     );
@@ -378,7 +378,7 @@ class NamecraneMail extends Module {
           'out'   => 'Outgoing',
           'inout' => 'Both'        
         ],
-        (isset($vars->meta['archive_direction']) ? $vars->meta['archive_direction'] : null) == 'true',
+        (isset($vars->meta['archive_direction']) ? $vars->meta['archive_direction'] : null),
         ['id' => 'namecrane_mail_archive_direction']
       )
     );
@@ -395,7 +395,7 @@ class NamecraneMail extends Module {
           '0' => 'Disabled',
           '1' => 'Enabled'
         ],
-        (isset($vars->meta['spamexperts']) ? $vars->meta['spamexperts'] : null) == 'true',
+        (isset($vars->meta['spamexperts']) ? $vars->meta['spamexperts'] : null),
         ['id' => 'namecrane_mail_spamexperts']
       )
     );
@@ -412,7 +412,7 @@ class NamecraneMail extends Module {
           'primary' => 'Primary Administrator Only',
           'all'     => 'All Domain Administrators'
         ],
-        (isset($vars->meta['spamexperts_adminaccess']) ? $vars->meta['spamexperts_adminaccess'] : null) == 'true',
+        (isset($vars->meta['spamexperts_adminaccess']) ? $vars->meta['spamexperts_adminaccess'] : null),
         ['id' => 'namecrane_mail_spamexperts_adminaccess']
       )
     );
@@ -429,7 +429,7 @@ class NamecraneMail extends Module {
           '0' => 'Disabled',
           '1' => 'Enabled'
         ],
-        (isset($vars->meta['filestorage']) ? $vars->meta['filestorage'] : null) == 'true',
+        (isset($vars->meta['filestorage']) ? $vars->meta['filestorage'] : null),
         ['id' => 'namecrane_mail_filestorage']
       )
     );
@@ -446,7 +446,7 @@ class NamecraneMail extends Module {
           '0' => 'Disabled',
           '1' => 'Enabled'
         ],
-        (isset($vars->meta['office']) ? $vars->meta['office'] : null) == 'true',
+        (isset($vars->meta['office']) ? $vars->meta['office'] : null),
         ['id' => 'namecrane_mail_office']
       )
     );
