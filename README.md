@@ -37,6 +37,8 @@ Available values:
 | `filestorage` | `filestorage\|Online Web Drive` | `checkbox` | Enable the online File Storage & Sharing |
 | `office` | `office\|Office Suite` | `checkbox` | Enable the online Document creating & editing feature suite |
 
+All variables are available inside of the email templates via `{package.$name}` (eg. `{package.disklimit}`).
+
 ***Archiving Years Options***
 
 | Value | Description |
