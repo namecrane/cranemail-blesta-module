@@ -17,7 +17,7 @@ Thank you for your business!',
 <p>Your service is now active and you can manage it through our client area by clicking the "Manage" button next to the server on your Dashboard.</p>
 <p>Here are more details regarding your server:</p>
 <p>Login Page: <a href="https://workspace.org/">https://workspace.org/</a></p>
-User: {service.namecrane_mail_username}<br />Passwork: {service.namecrane_mail_password}</p>
+User: {service.namecrane_mail_username}<br />Password: {service.namecrane_mail_password}</p>
 <p>Thank you for your business!</p>'
    ]
 ]);
