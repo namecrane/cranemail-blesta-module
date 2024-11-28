@@ -18,7 +18,7 @@
         "name_key": "namecrane_mail_domain"
     },
     "email_tags": {
-        "package": ["diskspace","userlimit","useraliaslimit","domainaliaslimit","spamexperts"],
+        "package": ["disklimit","userlimit","useraliaslimit","domainaliaslimit","spamexperts","filestorage","office","archive_years","archive_direction"],
         "service": ["namecrane_mail_domain", "namecrane_mail_username", "namecrane_mail_password"]
     }
 }
