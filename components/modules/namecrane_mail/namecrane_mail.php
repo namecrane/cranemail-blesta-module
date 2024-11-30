@@ -490,7 +490,7 @@ class NamecraneMail extends Module {
   }
 
   public function addService($package, array $vars = null, $parent_package = null, $parent_service = null, $status = 'pending') {
-    return $this->processService('create', $package, $vars, $parent_package, $parent_service);
+    return $this->processService('create', $package, null,  $vars, $parent_package, $parent_service);
   }
 
   public function editService($package, $service, array $vars = null, $parent_package = null, $parent_service = null) {
