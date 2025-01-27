@@ -10,22 +10,14 @@
             <div class="pad">
                 <ul>
                     <li>
-                        <?php
-                        $this->Form->label($this->_('NamecraneMail.row_meta.server_name', true), 'server_name', ['class' => 'inline']);
-                        ?>
+                        <?php $this->Form->label($this->_('NamecraneMail.row_meta.server_name', true), 'server_name', ['class' => 'inline']); ?>
                         <span class="tooltip inline-block"><?php $this->_("AppController.tooltip.text");?><div><?php $this->_("NamecraneMail.row_meta.tooltip.server_name");?></div></span>
-                        <?php
-                        $this->Form->fieldText('server_name', (isset($vars->server_name) ? $vars->server_name : null), ['id' => 'server_name', 'class' => 'block']);
-                        ?>
+                        <?php $this->Form->fieldText('server_name', (isset($vars->server_name) ? $vars->server_name : null), ['id' => 'server_name', 'class' => 'block']); ?>
                     </li>
                     <li>
-                        <?php
-                        $this->Form->label($this->_('NamecraneMail.row_meta.api_key', true), 'api_key', ['class' => 'inline']);
-                        ?>
+                        <?php $this->Form->label($this->_('NamecraneMail.row_meta.api_key', true), 'api_key', ['class' => 'inline']); ?>
                         <span class="tooltip inline-block"><?php $this->_("AppController.tooltip.text");?><div><?php $this->_("NamecraneMail.row_meta.tooltip.api_key");?></div></span>
-                        <?php
-                        $this->Form->fieldText('api_key', (isset($vars->api_key) ? $vars->api_key : null), ['id' => 'api_key', 'class' => 'block']);
-                        ?>
+                        <?php $this->Form->fieldText('api_key', (isset($vars->api_key) ? $vars->api_key : null), ['id' => 'api_key', 'class' => 'block']); ?>
                     </li>
                 </ul>
             </div>

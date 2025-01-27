@@ -1,49 +1,63 @@
-<table class="table table-striped">
-    <thead>
+<div class="table-responsive">
+
+    <?php if(!$verified['status']) { ?>
+    
+    <div class="alert alert-warning">
+    <?=$this->_('NamecraneMail.verification.missing')?>
+    </div>
+
+    <?php } else { ?>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Resource</th>
+                <th>Usage</th>
+            </tr>
+        </thead>
+    <tbody>
         <tr>
-            <th>Resource</th>
-            <th>Usage</th>
+            <td><?=Language::_('NamecraneMail.resource_usage.diskspace', true)?></td>
+            <td><?=($info['diskusage'] / 1024);?> GB / <?=($info['disklimit'] / 1024)?> GB</td></tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.email_users', true)?></td>
+            <td><?=$info['usercount']?> / <?=($info['userlimit'] ? $info['userlimit'] : '&infin;')?></td>
         </tr>
-    </thead>
-  <tbody>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.diskspace', true)?></td>
-        <td><?=($info['diskusage'] / 1024);?> GB / <?=($info['disklimit'] / 1024)?> GB</td></tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.email_users', true)?></td>
-        <td><?=$info['usercount']?> / <?=($info['userlimit'] ? $info['userlimit'] : '&infin;')?></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.email_aliases', true)?></td>
-        <td><?=$info['useraliascount']?> / <?=($info['useraliaslimit'] ? $info['useraliaslimit'] : '&infin;')?></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.domain_aliases', true)?></td>
-        <td><?=$info['domainaliascount']?> / <?=($info['domainaliaslimit'] ? $info['domainaliaslimit'] : '&infin;')?></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.filestorage', true)?></td>
-        <td><strong><?=($info['filestorage'] ? 'Enabled' : 'Disabled')?></strong></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.office', true)?></td>
-        <td><strong><?=($info['office'] ? 'Enabled' : 'Disabled')?></strong></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.spamexperts.status', true)?></td>
-        <td><strong><?=($info['spamexperts'] ? 'Enabled' : 'Disabled')?></strong></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.email_archives.status', true)?></td>
-        <td><?=($info['archive_years'] ? 'Enabled' : 'Disabled')?></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.email_archives.direction', true)?></td>
-        <td><?=($info['archive_years'] ? Language::_('NamecraneMail.resource_usage.email_archives.direction.' . $info['archive_direction'], true) : 'N/A')?></td>
-    </tr>
-    <tr>
-        <td><?=Language::_('NamecraneMail.resource_usage.last_updated', true)?></td>
-        <td><?=$info['lastupdated']?></td>
-    </tr>
-  </tbody>
-</table>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.email_aliases', true)?></td>
+            <td><?=$info['useraliascount']?> / <?=($info['useraliaslimit'] ? $info['useraliaslimit'] : '&infin;')?></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.domain_aliases', true)?></td>
+            <td><?=$info['domainaliascount']?> / <?=($info['domainaliaslimit'] ? $info['domainaliaslimit'] : '&infin;')?></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.filestorage', true)?></td>
+            <td><strong><?=($info['filestorage'] ? 'Enabled' : 'Disabled')?></strong></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.office', true)?></td>
+            <td><strong><?=($info['office'] ? 'Enabled' : 'Disabled')?></strong></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.spamexperts.status', true)?></td>
+            <td><strong><?=($info['spamexperts'] ? 'Enabled' : 'Disabled')?></strong></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.email_archives.status', true)?></td>
+            <td><?=($info['archive_years'] ? 'Enabled' : 'Disabled')?></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.email_archives.direction', true)?></td>
+            <td><?=($info['archive_years'] ? Language::_('NamecraneMail.resource_usage.email_archives.direction.' . $info['archive_direction'], true) : 'N/A')?></td>
+        </tr>
+        <tr>
+            <td><?=Language::_('NamecraneMail.resource_usage.last_updated', true)?></td>
+            <td><?=$info['lastupdated']?></td>
+        </tr>
+    </tbody>
+    </table>
+
+    <?php } ?>
+
+</div>

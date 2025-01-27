@@ -1,5 +1,13 @@
 <div class="table-responsive">
 
+    <?php if(!$verified['status']) { ?>
+    
+    <div class="alert alert-warning">
+        <?=$this->_('NamecraneMail.verification.missing')?>
+    </div>
+
+    <?php } else { ?>
+
     <h4><?=$this->_('NamecraneMail.tabs.login_details')?></h4>
 
     <table class="table table-curved table-striped">
@@ -23,5 +31,7 @@
     <br />
 
     <a href="https://workspace.org/" class="btn btn-med btn-primary" target="_blank"><?=$this->_('NamecraneMail.button.login_portal')?></a>
+
+    <?php } ?>
 
 </div>

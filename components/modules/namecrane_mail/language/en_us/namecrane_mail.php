@@ -65,8 +65,8 @@ $lang['NamecraneMail.!error.domain.valid'] = 'Invalid Domain';
 $lang['NamecraneMail.!error.module_row.missing'] = 'An internal error occurred. The module row is unavailable.';
 $lang['NamecraneMail.!error.disklimit.valid'] = 'Disk Space must be a positive whole integer.';
 $lang['NamecraneMail.!error.userlimit.valid'] = 'Max Email Users be a positive whole integer.';
-$lang['NamecraneMail.!error.useraliaseslimit.valid'] = 'Max User Aliases must be a positive whole integer.';
-$lang['NamecraneMail.!error.domainaliaseslimit.valid'] = 'Max Domain Aliases must be a positive whole integer.';
+$lang['NamecraneMail.!error.useraliaslimit.valid'] = 'Max User Aliases must be a positive whole integer.';
+$lang['NamecraneMail.!error.domainaliaslimit.valid'] = 'Max Domain Aliases must be a positive whole integer.';
 $lang['NamecraneMail.!error.archive_direction.valid'] = 'Archive Direction must be one of "in", "out", or "inout".';
 
 // Service info
@@ -109,6 +109,9 @@ $lang['NamecraneMail.resource_usage.email_archives.direction.out'] = 'Outgoing';
 $lang['NamecraneMail.resource_usage.email_archives.direction.inout'] = 'Incoming + Outgoing';
 $lang['NamecraneMail.resource_usage.last_updated'] = 'Last Updated';
 
+// Domain Verification
+
+$lang['NamecraneMail.verification.missing'] = 'You must verify you own this domain before it is fully functional.';
 // Buttons
 
 $lang['NamecraneMail.button.login_portal'] = 'Login Now';

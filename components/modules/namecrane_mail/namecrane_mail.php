@@ -787,16 +787,8 @@ class NamecraneMail extends Module {
 
   public function getResourceUsage($package, $service, array $get = null, array $post = null, array $files = null) {
 
-    $row            = $this->getModuleRow();
     $service_fields = $this->serviceFieldsToObject($service->fields);
-
-    $api = $this->getApi($row->meta->api_key);
-
-    $post = [
-      'domain' => $service_fields->namecrane_mail_domain
-    ];
-  
-    $stats = $api->execute('POST', 'domain/info', $post);
+    $stats          = $this->_getDomainInfo($service_fields->namecrane_mail_domain);
 
     // handle loading our view
     
@@ -806,13 +798,13 @@ class NamecraneMail extends Module {
 
     Loader::loadHelpers($this, ['Form', 'Html']);
 
-    if(!empty($stats['data']['data']['spamexperts_direction'])) {
+    if(!empty($stats['spamexperts_direction'])) {
 
     } else {
-      $stats['data']['data']['spamexperts_direction'] = Language::_('NamecraneMail.tabs.webmail_login', true);
+      $stats['spamexperts_direction'] = Language::_('NamecraneMail.tabs.webmail_login', true);
     }    
 
-    $this->view->set('info', $stats['data']['data']);
+    $this->view->set('info', $stats);
     
     return $this->view->fetch();
     
@@ -820,25 +812,18 @@ class NamecraneMail extends Module {
 
   public function getDNSSettings($package, $service, array $get = null, array $post = null, array $files = null) {
 
-    $row            = $this->getModuleRow();
     $service_fields = $this->serviceFieldsToObject($service->fields);
+    $stats          = $this->_getDomainInfo($service_fields->namecrane_mail_domain);
 
-    $api = $this->getApi($row->meta->api_key);
-
-    $post = [
-      'domain' => $service_fields->namecrane_mail_domain
-    ];
-  
-    $stats = $api->execute('POST', 'domain/info', $post);
-    
     $this->view = new View('dns_records', 'default');
     $this->view->base_uri = $this->base_uri;
     $this->view->setDefaultView('components' . DS . 'modules' . DS . 'namecrane_mail' . DS);
 
     Loader::loadHelpers($this, ['Form', 'Html']);
 
-    $this->view->set('dns', $stats['data']['data']['dns']);
-    $this->view->set('dkim', $stats['data']['data']['dkim']);
+    $this->view->set('dns', $stats['dns']);
+    $this->view->set('dkim', $stats['dkim']);
+    $this->view->set('verified', $stats['verified']);
     $this->view->set('service_fields', $service_fields);
 
     return $this->view->fetch();
@@ -881,6 +866,7 @@ class NamecraneMail extends Module {
 
     $row            = $this->getModuleRow();
     $service_fields = $this->serviceFieldsToObject($service->fields);
+    $stats          = $this->_getDomainInfo($service_fields->namecrane_mail_domain);
 
     Loader::loadHelpers($this, [ 'Form', 'Html' ]);
 
@@ -889,11 +875,32 @@ class NamecraneMail extends Module {
     $this->view->setDefaultView('components' . DS . 'modules' . DS . 'namecrane_mail' . DS);
 
     $this->view->set('service_fields', $service_fields);
+    $this->view->set('verified', $stats['verified']);
 
     return $this->view->fetch();
 
   }
 
+
+  public function _getDomainInfo($domain) {
+
+    $row  = $this->getModuleRow();
+    $api  = $this->getApi($row->meta->api_key);
+
+    $post = [
+      'domain' => $domain
+    ];
+  
+    
+    $return = $api->execute('POST', 'domain/info', $post);
+    
+    if($return['status']) {
+      return $return['data']['data'];
+    }
+
+    return false;
+    
+  }
 
   // Validation
 
