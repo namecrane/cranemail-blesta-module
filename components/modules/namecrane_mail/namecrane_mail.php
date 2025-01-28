@@ -805,6 +805,7 @@ class NamecraneMail extends Module {
     }    
 
     $this->view->set('info', $stats);
+    $this->view->set('verified', $stats['verified']);
     
     return $this->view->fetch();
     
