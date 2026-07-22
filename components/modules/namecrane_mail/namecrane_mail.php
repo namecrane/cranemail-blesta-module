@@ -387,7 +387,7 @@ class NamecraneMail extends Module {
     
     // spamexperts
 
-    $spamexperts = $fields->label(Language::_('NamecraneMail.package_fields.spamexperts', true), 'namecrane_mail_spamexperts');
+    $spamexperts = $fields->label(Language::_('NamecraneMail.package_fields.mxfilter', true), 'namecrane_mail_spamexperts');
     $spamexperts->attach(
       $fields->fieldSelect(
         'meta[spamexperts]',
@@ -404,7 +404,7 @@ class NamecraneMail extends Module {
 
     // spamexperts admin access
     
-    $spamexperts_adminaccess = $fields->label(Language::_('NamecraneMail.package_fields.spamexperts_adminaccess', true), 'namecrane_mail_spamexperts_adminaccess');
+    $spamexperts_adminaccess = $fields->label(Language::_('NamecraneMail.package_fields.mxfilter_adminaccess', true), 'namecrane_mail_mxfilter_adminaccess');
     $spamexperts_adminaccess->attach(
       $fields->fieldSelect(
         'meta[spamexperts_adminaccess]',
@@ -763,7 +763,7 @@ class NamecraneMail extends Module {
     ];
 
     if($package->meta->spamexperts) {
-      $tabs['getSpamExpertsSSO'] = Language::_('NamecraneMail.tabs.login_to_spamexperts', true);
+      $tabs['getMXFilterSSO'] = Language::_('NamecraneMail.tabs.login_to_mxfilter', true);
     }
 
     return $tabs;
@@ -778,7 +778,7 @@ class NamecraneMail extends Module {
     ];
 
     if($package->meta->spamexperts) {
-      $tabs['getSpamExpertsSSO'] = Language::_('NamecraneMail.tabs.login_to_spamexperts', true);
+      $tabs['getMXFilterSSO'] = Language::_('NamecraneMail.tabs.login_to_mxfilter', true);
     }
 
     return $tabs;
@@ -831,7 +831,7 @@ class NamecraneMail extends Module {
 
   }
 
-  public function getSpamExpertsSSO($package, $service, array $get = null, array $post = null, array $files = null) {
+  public function getMXFilterSSO($package, $service, array $get = null, array $post = null, array $files = null) {
 
     $row            = $this->getModuleRow();
     $service_fields = $this->serviceFieldsToObject($service->fields);
@@ -842,7 +842,7 @@ class NamecraneMail extends Module {
       'domain' => $service_fields->namecrane_mail_domain
     ];
   
-    $sso = $api->execute('POST', 'spamexperts/login', $post);
+    $sso = $api->execute('POST', 'mxfilter/login', $post);
 
     if(!$sso['status']) {
       return 'Couldn\'t get authentication token.';
