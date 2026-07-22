@@ -36,7 +36,7 @@ $lang['NamecraneMail.manage.module_groups.no_results'] = 'There is no Server Gro
 // Tabs
 $lang['NamecraneMail.tabs.resource_usage'] = 'Resource Usage';
 $lang['NamecraneMail.tabs.dns_records'] = 'DNS Records';
-$lang['NamecraneMail.tabs.login_to_spamexperts'] = 'Login to SpamExperts';
+$lang['NamecraneMail.tabs.login_to_mxfilter'] = 'Login to MXFilter';
 $lang['NamecraneMail.tabs.login_details'] = 'Login Details';
 
 // Add row
@@ -88,8 +88,8 @@ $lang['NamecraneMail.package_fields.disklimit'] = 'Disk Space (GB)';
 $lang['NamecraneMail.package_fields.userlimit'] = 'Max Email Users';
 $lang['NamecraneMail.package_fields.useraliaslimit'] = 'Max User Aliases';
 $lang['NamecraneMail.package_fields.domainaliaslimit'] = 'Max Domain Aliases';
-$lang['NamecraneMail.package_fields.spamexperts'] = 'SpamExperts';
-$lang['NamecraneMail.package_fields.spamexperts_adminaccess'] = 'SpamExperts Administrator Access';
+$lang['NamecraneMail.package_fields.mxfilter'] = 'MXFilter';
+$lang['NamecraneMail.package_fields.mxfilter_adminaccess'] = 'MXFilter Administrator Access';
 $lang['NamecraneMail.package_fields.archive_years'] = 'Archive Years';
 $lang['NamecraneMail.package_fields.archive_direction'] = 'Archive Direction';
 $lang['NamecraneMail.package_fields.filestorage'] = 'File Storage';
@@ -101,7 +101,7 @@ $lang['NamecraneMail.resource_usage.email_aliases'] = 'Email Aliases';
 $lang['NamecraneMail.resource_usage.domain_aliases'] = 'Domain Aliases';
 $lang['NamecraneMail.resource_usage.filestorage'] = 'File Storage';
 $lang['NamecraneMail.resource_usage.office'] = 'Office Suite';
-$lang['NamecraneMail.resource_usage.spamexperts.status'] = 'SpamExperts';
+$lang['NamecraneMail.resource_usage.mxfilter.status'] = 'MXFilter';
 $lang['NamecraneMail.resource_usage.email_archives.status'] = 'Email Archiving Status';
 $lang['NamecraneMail.resource_usage.email_archives.direction'] = 'Archiving Direction';
 $lang['NamecraneMail.resource_usage.email_archives.direction.in'] = 'Incoming';
