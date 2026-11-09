@@ -1,0 +1,9 @@
+<?php
+// The client pages' stylesheet and script, once per page.
+if (!defined('NAMECRANE_MAIL_ASSETS')) {
+    define('NAMECRANE_MAIL_ASSETS', true);
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->Html->safe($this->view_dir . 'css/namecrane_mail.css?v=' . $version); ?>">
+<script src="<?php echo $this->Html->safe($this->view_dir . 'js/namecrane_mail.js?v=' . $version); ?>" defer></script>
+<?php
+}

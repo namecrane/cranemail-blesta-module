@@ -1,0 +1,139 @@
+<?php
+/**
+ * The client's mailboxes: the add (or edit) form, then the list.
+ *
+ * @var array|null $domain
+ * @var array $mailboxes
+ * @var string|null $list_error Why the list can't be shown yet
+ * @var array|null $editing The mailbox being edited
+ * @var array $form
+ * @var bool $webmail_login Whether to offer each mailbox's webmail without its password
+ * @var string $domain_name
+ * @var string $tab_url
+ */
+include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
+?>
+<div class="ncm">
+    <?php if ($list_error) { ?>
+        <div class="alert alert-info"><?php $this->Html->_($list_error); ?></div>
+    <?php } elseif ($domain) { ?>
+        <div class="card ncm-card">
+            <div class="card-header">
+                <h3 class="ncm-card-title"><?php echo $editing ? $this->_('NamecraneMail.mailboxes.edit_title', true, $this->Html->safe($editing['username'] . '@' . $domain_name)) : $this->_('NamecraneMail.mailboxes.add_title', true); ?></h3>
+            </div>
+            <div class="card-body">
+                <?php
+                $this->Form->create($tab_url);
+                $this->Form->fieldHidden('op', $editing ? 'update' : 'create');
+                if ($editing) {
+                    $this->Form->fieldHidden('original', $editing['username']);
+                }
+                ?>
+                <div class="row">
+                    <div class="col-md-6 ncm-field">
+                        <label for="ncm-name"><?php $this->_('NamecraneMail.mailboxes.address'); ?></label>
+                        <div class="ncm-address">
+                            <input id="ncm-name" name="name" class="form-control" value="<?php $this->Html->_($form['name']); ?>" <?php echo $editing ? 'disabled' : 'required'; ?> autocomplete="off">
+                            <span>@<?php $this->Html->_($domain_name); ?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 ncm-field">
+                        <label for="ncm-display-name"><?php $this->_('NamecraneMail.mailboxes.display_name'); ?></label>
+                        <input id="ncm-display-name" name="display_name" class="form-control" value="<?php $this->Html->_($form['display_name']); ?>" maxlength="255">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 ncm-field">
+                        <label for="ncm-password"><?php $this->_($editing ? 'NamecraneMail.mailboxes.new_password' : 'NamecraneMail.mailboxes.password'); ?></label>
+                        <?php
+                        $password_id = 'ncm-password';
+                        $password_name = 'password';
+                        $password_value = $form['password'];
+                        $password_form = true;
+                        $password_required = !$editing;
+                        include __DIR__ . DS . 'partials' . DS . 'password_field.pdt';
+                        ?>
+                        <p class="ncm-help"><?php $this->_($editing ? 'NamecraneMail.mailboxes.password_keep' : 'NamecraneMail.mailboxes.password_help'); ?></p>
+                    </div>
+                    <div class="col-md-6 ncm-field">
+                        <label for="ncm-quota"><?php $this->_('NamecraneMail.mailboxes.quota'); ?></label>
+                        <input id="ncm-quota" name="disk_limit" type="number" min="0" class="form-control" value="<?php $this->Html->_($form['disk_limit']); ?>">
+                        <p class="ncm-help"><?php $this->_('NamecraneMail.mailboxes.quota_help'); ?></p>
+                    </div>
+                </div>
+                <label class="ncm-check"><input type="checkbox" name="admin" value="1"<?php echo $form['admin'] ? ' checked' : ''; ?>> <?php $this->_('NamecraneMail.mailboxes.admin'); ?></label>
+                <?php if ($editing) { ?>
+                    <label class="ncm-check"><input type="checkbox" name="enabled" value="1"<?php echo $form['enabled'] ? ' checked' : ''; ?>> <?php $this->_('NamecraneMail.mailboxes.enabled'); ?></label>
+                <?php } ?>
+                <div class="ncm-form-actions">
+                    <button type="submit" class="btn btn-primary"><?php $this->_($editing ? 'NamecraneMail.mailboxes.save' : 'NamecraneMail.mailboxes.add'); ?></button>
+                    <?php if ($editing) { ?>
+                        <a href="<?php $this->Html->_($tab_url); ?>" class="btn btn-light"><?php $this->_('NamecraneMail.cancel'); ?></a>
+                    <?php } ?>
+                </div>
+                <?php $this->Form->end(); ?>
+            </div>
+        </div>
+
+        <div class="card ncm-card">
+            <div class="card-header">
+                <h3 class="ncm-card-title"><?php $this->_('NamecraneMail.tabs.mailboxes'); ?> <span class="ncm-count"><?php $this->_('NamecraneMail.list.count', false, count($mailboxes), $domain['user_limit'] ?: $this->_('NamecraneMail.usage.unlimited', true)); ?></span></h3>
+            </div>
+            <?php if ($mailboxes) { ?>
+                <div class="ncm-scroll">
+                    <table class="table table-striped ncm-list">
+                        <thead><tr><th><?php $this->_('NamecraneMail.mailboxes.address'); ?></th><th><?php $this->_('NamecraneMail.mailboxes.display_name'); ?></th><th><?php $this->_('NamecraneMail.mailboxes.usage'); ?></th><th></th></tr></thead>
+                        <tbody>
+                            <?php foreach ($mailboxes as $mailbox) {
+                                $address = $mailbox['username'] . '@' . $domain_name;
+                            ?>
+                                <tr>
+                                    <td>
+                                        <strong><?php $this->Html->_($address); ?></strong>
+                                        <?php if (!empty($mailbox['primary_admin'])) { ?>
+                                            <span class="badge badge-info bg-info"><?php $this->_('NamecraneMail.mailboxes.primary_admin'); ?></span>
+                                        <?php } elseif (!empty($mailbox['admin'])) { ?>
+                                            <span class="badge badge-info bg-info"><?php $this->_('NamecraneMail.mailboxes.admin_badge'); ?></span>
+                                        <?php } ?>
+                                        <?php if (empty($mailbox['enabled'])) { ?>
+                                            <span class="badge badge-warning bg-warning"><?php $this->_('NamecraneMail.mailboxes.disabled'); ?></span>
+                                        <?php } ?>
+                                    </td>
+                                    <td><?php $this->Html->_($mailbox['display_name'] ?? ''); ?></td>
+                                    <td class="ncm-nowrap"><?php echo !empty($mailbox['disk_limit'])
+                                        ? $this->_('NamecraneMail.mailboxes.usage_of', true, $this->Html->safe($mailbox['disk_usage']), $this->Html->safe($mailbox['disk_limit']))
+                                        : '<span class="ncm-muted">' . $this->_('NamecraneMail.mailboxes.domain_limit', true) . '</span>'; ?></td>
+                                    <td>
+                                        <div class="ncm-row-actions">
+                                            <?php if ($webmail_login && !empty($mailbox['enabled'])) {
+                                                $this->Form->create($tab_url, ['target' => '_blank', 'class' => 'ncm-inline']);
+                                                $this->Form->fieldHidden('op', 'webmail');
+                                                $this->Form->fieldHidden('mailbox', $mailbox['username']);
+                                            ?>
+                                                <button type="submit" class="btn btn-light btn-sm"><?php $this->_('NamecraneMail.mailboxes.webmail'); ?></button>
+                                            <?php
+                                                $this->Form->end();
+                                            } ?>
+                                            <a href="<?php $this->Html->_($tab_url . '?edit=' . rawurlencode($mailbox['username'])); ?>" class="btn btn-light btn-sm"><?php $this->_('NamecraneMail.edit'); ?></a>
+                                            <?php if (empty($mailbox['primary_admin'])) {
+                                                $this->Form->create($tab_url, ['class' => 'ncm-inline', 'data-ncm-confirm' => $this->_('NamecraneMail.mailboxes.confirm_delete', true, $address)]);
+                                                $this->Form->fieldHidden('op', 'delete');
+                                                $this->Form->fieldHidden('original', $mailbox['username']);
+                                            ?>
+                                                <button type="submit" class="btn btn-danger btn-sm"><?php $this->_('NamecraneMail.delete'); ?></button>
+                                            <?php
+                                                $this->Form->end();
+                                            } ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php } else { ?>
+                <div class="card-body"><p class="ncm-muted"><?php $this->_('NamecraneMail.mailboxes.none'); ?></p></div>
+            <?php } ?>
+        </div>
+    <?php } ?>
+</div>

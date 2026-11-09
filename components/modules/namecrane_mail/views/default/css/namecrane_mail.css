@@ -1,0 +1,48 @@
+/* NameCrane Mail client pages, scoped to .ncm. Bootstrap's own classes do the rest. */
+.ncm .ncm-card { margin-bottom: 20px; }
+.ncm .ncm-card > .table,
+.ncm .ncm-card > .ncm-scroll > .table { margin-bottom: 0; }
+.ncm .ncm-card > .table td:first-child,
+.ncm .ncm-card > .table th:first-child,
+.ncm .ncm-card > .ncm-scroll > .table td:first-child,
+.ncm .ncm-card > .ncm-scroll > .table th:first-child { padding-left: 1.25rem; }
+.ncm .ncm-card > .table td:last-child,
+.ncm .ncm-card > .table th:last-child,
+.ncm .ncm-card > .ncm-scroll > .table td:last-child,
+.ncm .ncm-card > .ncm-scroll > .table th:last-child { padding-right: 1.25rem; }
+.ncm .ncm-card-title { margin: 0; font-size: 1.05rem; font-weight: 600; }
+.ncm .ncm-scroll { overflow-x: auto; }
+.ncm .card-body > .table:last-child { margin-bottom: 0; }
+.ncm .ncm-right { text-align: right; }
+.ncm .ncm-nowrap { white-space: nowrap; }
+.ncm .ncm-muted { margin: 0; font-size: 0.9em; opacity: 0.75; }
+.ncm .ncm-help { margin: 5px 0 0; font-size: 0.85em; opacity: 0.75; }
+.ncm .ncm-intro { margin: 0 0 15px; }
+.ncm .ncm-count { margin-left: 6px; font-size: 0.85em; font-weight: normal; opacity: 0.7; }
+.ncm .ncm-status { margin-left: 6px; font-size: 0.7em; vertical-align: middle; }
+.ncm .ncm-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.ncm .ncm-copy { user-select: all; }
+.ncm .ncm-wrap { word-break: break-all; }
+.ncm .ncm-mono { font-family: SFMono-Regular, Menlo, Consolas, monospace; }
+.ncm .ncm-icon { display: inline-block; width: 16px; height: 16px; vertical-align: -3px; }
+.ncm .ncm-records td { vertical-align: top; }
+.ncm .ncm-list td { vertical-align: middle; }
+.ncm .ncm-targets div { white-space: nowrap; }
+.ncm .ncm-inline { display: inline; margin: 0; }
+.ncm .ncm-row-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.ncm .ncm-field { margin-bottom: 1rem; }
+.ncm .ncm-field > label { display: block; margin-bottom: 0.35rem; font-weight: 600; }
+.ncm .ncm-address,
+.ncm .ncm-password { display: flex; align-items: center; gap: 6px; }
+.ncm .ncm-address .form-control,
+.ncm .ncm-password .form-control { flex: 1 1 auto; min-width: 0; }
+.ncm .ncm-address span { white-space: nowrap; opacity: 0.8; }
+.ncm .ncm-password .btn { flex: 0 0 auto; }
+.ncm .ncm-secret { max-width: 280px; }
+.ncm [data-ncm-toggle][aria-pressed="true"] { opacity: 0.65; }
+.ncm .ncm-check { display: block; margin: 0 0 6px; font-weight: normal; cursor: pointer; }
+.ncm .ncm-check input { margin: 0 6px 0 0; vertical-align: middle; }
+.ncm .ncm-form-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 15px; }
+.ncm .ncm-row-form { display: flex; flex-wrap: wrap; gap: 8px; }
+.ncm .ncm-row-form .form-control { flex: 1 1 220px; width: auto; }
+.ncm .badge { margin-left: 4px; font-weight: 600; }

@@ -1,58 +1,90 @@
-Blesta module to handle provisioning of domains on the Namecrane Mail platform.
+Blesta module for selling NameCrane Mail email domains from your NameCrane reseller plan.
 
-*This is still in Beta, feedback is welcome!*
+Works with Blesta 6.
 
-***Blesta Tutorial***
+## Updating from 1.x
 
-1) Login to NameCrane and view the CraneMail management Portal.
-2) Pull down the <code>Reseller Tools</code> menu option and pick <code>API Key</code>.
-3) Click the `Refresh` icon incase you don't already have an API key.
-4) Upload the module to your Blesta install.
-5) Add a `Server`, picking `Namecrane Mail` from the module list.
-6) Place the `API Key` from the <code>Reseller Tools</code> section into the `API Key` text box.
-8) Create your plans, specifying `Namecrane Mail` as the module.
+Upload the new `components/modules/namecrane_mail` folder over the old one, then open
+**Settings > Company > Modules** and click **Upgrade** next to NameCrane Mail. Your servers,
+packages and services carry over as they are. The 1.x module stops working on December 1,
+2026.
 
-***Missing Features***
+## Setup
 
-- Allow the client to change thier SpamExperts administrator policy?
-- Pulling resellers whitelabel domain and use that in place of our included whitelabel domain
+1. In the NameCrane client portal, create an API key under **My Profile > API Keys**. Give it
+   Full Access, or limit it to your CraneMail reseller service with read and write.
+2. Upload `components/modules/namecrane_mail` to your Blesta install.
+3. Install **NameCrane Mail** under **Settings > Company > Modules > Available**.
+4. Add a **Server**:
+   - **Server Name**: any name, shown only to you.
+   - **API Key**: your API key.
+   - **Reseller Plan Service ID**: leave empty, unless the key covers more than one reseller
+     plan. Then put the service ID of the plan this server is for (the number in its portal
+     address).
 
-***Order time customizing (À la carte)***
+   The key is checked when you save.
+5. Create your packages with **NameCrane Mail** as the module and set their options.
 
-You can to add `Configuration Options` to allow users to on-demand customize their resources. These values override whatever is set in the plan itself.
+The API reference is at https://namecrane.com/docs/api.
 
-***If you're using this feature, we recommend setting the limits to **0** inside of your packages to stop any confusion.***
+## What clients get
 
-Available values:
+On the service's page, clients see their domain's status, the DNS records to set, usage, and
+the administrator sign-in. Unless you hide them (the **Client Mailbox Management** option),
+they can also manage:
 
-| Name | Label | Type | Description |
-| ------------| ------- | ---- | ----------- |
-| `userlimit` | `User Emails` | `quantity` | How many email accounts the domain may have |
-| `disklimit` | `Disk Storage (GB)` | `quantity` | Total disk storage available (GB) |
-| `useraliaslimit` | `User Aliases` | `quantity` | How many email aliases the domain may have | 
-| `spamexperts` | `SpamExperts` | `checkbox` | Enable SpamExperts Anti Spam filtering | 
-| `domainaliaslimit` | `Domain Aliases` | `quantity` | How many domain aliases the domain may have |
-| `archive_years` | `Email Archiving (years)` | `dropdown` | How many years to archive emails for |
-| `archive_direction` | `Email Archiving Direction` | `dropdown` (values `in`, `out,` `inout`) | Archive incoming, outgoing, or both, emails |
-| `filestorage` | `filestorage\|Online Web Drive` | `checkbox` | Enable the online File Storage & Sharing |
-| `office` | `office\|Office Suite` | `checkbox` | Enable the online Document creating & editing feature suite |
+- mailboxes: add, edit, change passwords, delete, and open their webmail;
+- aliases (forwarding addresses);
+- domain aliases.
 
-All variables are available inside of the email templates via `{package.$name}` (eg. `{package.disklimit}`).
+The webmail address is your own login hostname when you've set one up under Login Portal in
+the NameCrane portal, otherwise workspace.org.
 
-***Archiving Years Options***
+Staff get an **Email Overview** tab on the service: status, usage, features, DNS records and
+a button to open MXFilter.
 
-| Value | Description |
-|-|-|
-| `1` | `1 Year` |
-| `2` | `2 Years` |
-| `3` | `3 Years` |
-| `4` | `4 Years` |
-| `5` | `5 Years` |
-| `6` | `6 Years` |
-| `7` | `7 Years` |
-| `8` | `8 Years` |
-| `9` | `9 Years` |
-| `10` | `10 Years` |
-| `15` | `15 Years` |
-| `20` | `20 Years` |
+## Package options
 
+| Option | Description |
+| ------ | ----------- |
+| Disk Space (GB) | Storage for the domain |
+| Max Email Users | Mailboxes (0 = unlimited) |
+| Max User Aliases | Aliases (0 = unlimited) |
+| Max Domain Aliases | Domain aliases (0 = unlimited) |
+| Email Archiving (Years) | How long to archive mail |
+| Email Archiving Direction | Incoming, outgoing, or both |
+| MXFilter Spam Filtering | Filter the domain's mail through MXFilter |
+| MXFilter Access | Which domain administrators can open MXFilter from webmail |
+| File Storage | Online file storage |
+| Office Suite | Online document editing |
+| Webmail Login | Lets the client open any mailbox's webmail without its password |
+| MXFilter Login | Lets the client and your staff open MXFilter without a password |
+| Client Mailbox Management | Shows or hides the Mailboxes, Aliases and Domain Aliases tabs |
+
+**Privacy (GDPR):** set **Webmail Login** and **MXFilter Login** to **Turned off** where only
+the mailbox owner may open their mail. NameCrane then refuses those sign-ins for the domain
+everywhere, including in your NameCrane portal.
+
+## Order-time options (à la carte)
+
+Configurable options override the package's settings. Give each option the name below (the
+label can be anything). If you use them, set the matching package options to 0 to avoid
+confusion.
+
+| Option name | Type | Description |
+| ----------- | ---- | ----------- |
+| `disklimit` | quantity | Storage (GB) |
+| `userlimit` | quantity | Mailboxes |
+| `useraliaslimit` | quantity | Aliases |
+| `domainaliaslimit` | quantity | Domain aliases |
+| `spamexperts` | checkbox | MXFilter spam filtering |
+| `archive_years` | dropdown | Archiving years: 0 (off), 1 to 10, 15 or 20 |
+| `archive_direction` | dropdown | `in`, `out` or `inout` |
+| `filestorage` | checkbox | Online file storage |
+| `office` | checkbox | Online document editing |
+
+## Email tags
+
+Welcome emails can use `{service.namecrane_mail_domain}`, `{service.namecrane_mail_username}`
+and `{service.namecrane_mail_password}` (the domain's administrator sign-in), and the package
+options as `{package.disklimit}`, `{package.userlimit}` and so on.

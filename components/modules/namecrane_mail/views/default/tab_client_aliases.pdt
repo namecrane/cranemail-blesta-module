@@ -1,0 +1,111 @@
+<?php
+/**
+ * The client's aliases (forwarding addresses): the add (or edit) form, then the list.
+ *
+ * @var array|null $domain
+ * @var array $aliases
+ * @var string|null $list_error Why the list can't be shown yet
+ * @var array|null $editing The alias being edited
+ * @var array $form
+ * @var array $features The alias options, as the API names them
+ * @var string $domain_name
+ * @var string $tab_url
+ */
+include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
+?>
+<div class="ncm">
+    <?php if ($list_error) { ?>
+        <div class="alert alert-info"><?php $this->Html->_($list_error); ?></div>
+    <?php } elseif ($domain) { ?>
+        <div class="card ncm-card">
+            <div class="card-header">
+                <h3 class="ncm-card-title"><?php echo $editing ? $this->_('NamecraneMail.aliases.edit_title', true, $this->Html->safe($editing['username'] . '@' . $domain_name)) : $this->_('NamecraneMail.aliases.add_title', true); ?></h3>
+            </div>
+            <div class="card-body">
+                <p class="ncm-help ncm-intro"><?php $this->_('NamecraneMail.aliases.intro'); ?></p>
+                <?php
+                $this->Form->create($tab_url);
+                $this->Form->fieldHidden('op', $editing ? 'update' : 'create');
+                if ($editing) {
+                    $this->Form->fieldHidden('original', $editing['username']);
+                }
+                ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="ncm-field">
+                            <label for="ncm-name"><?php $this->_('NamecraneMail.aliases.address'); ?></label>
+                            <div class="ncm-address">
+                                <input id="ncm-name" name="name" class="form-control" value="<?php $this->Html->_($form['name']); ?>" required autocomplete="off">
+                                <span>@<?php $this->Html->_($domain_name); ?></span>
+                            </div>
+                        </div>
+                        <div class="ncm-field">
+                            <label for="ncm-display-name"><?php $this->_('NamecraneMail.mailboxes.display_name'); ?></label>
+                            <input id="ncm-display-name" name="display_name" class="form-control" value="<?php $this->Html->_($form['display_name']); ?>" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="col-md-6 ncm-field">
+                        <label for="ncm-targets"><?php $this->_('NamecraneMail.aliases.targets'); ?></label>
+                        <textarea id="ncm-targets" name="targets" class="form-control ncm-mono" rows="4" placeholder="<?php $this->Html->_('jane@' . $domain_name . "\n" . 'sales@example.com'); ?>"><?php $this->Html->_($form['targets']); ?></textarea>
+                        <p class="ncm-help"><?php $this->_('NamecraneMail.aliases.targets_help'); ?></p>
+                    </div>
+                </div>
+                <?php foreach ($features as $feature) { ?>
+                    <label class="ncm-check"><input type="checkbox" name="feature_<?php echo $feature; ?>" value="1"<?php echo !empty($form['features'][$feature]) ? ' checked' : ''; ?>> <?php $this->_('NamecraneMail.aliases.feature.' . $feature); ?></label>
+                <?php } ?>
+                <div class="ncm-form-actions">
+                    <button type="submit" class="btn btn-primary"><?php $this->_($editing ? 'NamecraneMail.aliases.save' : 'NamecraneMail.aliases.add'); ?></button>
+                    <?php if ($editing) { ?>
+                        <a href="<?php $this->Html->_($tab_url); ?>" class="btn btn-light"><?php $this->_('NamecraneMail.cancel'); ?></a>
+                    <?php } ?>
+                </div>
+                <?php $this->Form->end(); ?>
+            </div>
+        </div>
+
+        <div class="card ncm-card">
+            <div class="card-header">
+                <h3 class="ncm-card-title"><?php $this->_('NamecraneMail.tabs.aliases'); ?> <span class="ncm-count"><?php $this->_('NamecraneMail.list.count', false, count($aliases), $domain['user_alias_limit'] ?: $this->_('NamecraneMail.usage.unlimited', true)); ?></span></h3>
+            </div>
+            <?php if ($aliases) { ?>
+                <div class="ncm-scroll">
+                    <table class="table table-striped ncm-list">
+                        <thead><tr><th><?php $this->_('NamecraneMail.aliases.address'); ?></th><th><?php $this->_('NamecraneMail.aliases.delivers_to'); ?></th><th></th></tr></thead>
+                        <tbody>
+                            <?php foreach ($aliases as $alias) {
+                                $address = $alias['username'] . '@' . $domain_name;
+                            ?>
+                                <tr>
+                                    <td>
+                                        <strong><?php $this->Html->_($address); ?></strong>
+                                        <?php if (!empty($alias['features']['catch_all'])) { ?>
+                                            <span class="badge badge-info bg-info"><?php $this->_('NamecraneMail.aliases.catch_all'); ?></span>
+                                        <?php } ?>
+                                        <?php if (!empty($alias['display_name'])) { ?>
+                                            <div class="ncm-muted"><?php $this->Html->_($alias['display_name']); ?></div>
+                                        <?php } ?>
+                                    </td>
+                                    <td class="ncm-targets"><?php foreach ($alias['targets'] ?? [] as $target) { ?><div><?php $this->Html->_($target); ?></div><?php } ?></td>
+                                    <td>
+                                        <div class="ncm-row-actions">
+                                            <a href="<?php $this->Html->_($tab_url . '?edit=' . rawurlencode($alias['username'])); ?>" class="btn btn-light btn-sm"><?php $this->_('NamecraneMail.edit'); ?></a>
+                                            <?php
+                                            $this->Form->create($tab_url, ['class' => 'ncm-inline', 'data-ncm-confirm' => $this->_('NamecraneMail.aliases.confirm_delete', true, $address)]);
+                                            $this->Form->fieldHidden('op', 'delete');
+                                            $this->Form->fieldHidden('original', $alias['username']);
+                                            ?>
+                                                <button type="submit" class="btn btn-danger btn-sm"><?php $this->_('NamecraneMail.delete'); ?></button>
+                                            <?php $this->Form->end(); ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php } else { ?>
+                <div class="card-body"><p class="ncm-muted"><?php $this->_('NamecraneMail.aliases.none'); ?></p></div>
+            <?php } ?>
+        </div>
+    <?php } ?>
+</div>

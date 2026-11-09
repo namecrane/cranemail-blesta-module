@@ -1,5 +1,5 @@
 {
-    "version": "1.0.1",
+    "version": "2.0.0",
     "name": "NamecraneMail.name",
     "description": "NamecraneMail.description",
     "authors": [
@@ -18,7 +18,8 @@
         "name_key": "namecrane_mail_domain"
     },
     "email_tags": {
-        "package": ["diskspace","userlimit","useraliaslimit","domainaliaslimit","spamexperts"],
+        "package": ["disklimit", "userlimit", "useraliaslimit", "domainaliaslimit", "spamexperts", "archive_years", "filestorage", "office"],
         "service": ["namecrane_mail_domain", "namecrane_mail_username", "namecrane_mail_password"]
-    }
+    },
+    "icon": "bi-envelope"
 }
