@@ -13,7 +13,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
 ?>
 <div class="ncm">
     <?php if ($list_error) { ?>
-        <div class="alert alert-info"><?php $this->Html->_($list_error); ?></div>
+        <div class="alert alert-info"><?php echo $this->Html->safe($list_error); ?></div>
     <?php } elseif ($domain) { ?>
         <div class="card ncm-card">
             <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.domain_aliases.add_title'); ?></h3></div>
@@ -24,7 +24,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                 $this->Form->fieldHidden('op', 'create');
                 ?>
                     <label for="ncm-name" class="sr-only visually-hidden"><?php $this->_('NamecraneMail.service_fields.domain'); ?></label>
-                    <input id="ncm-name" name="name" class="form-control" value="<?php $this->Html->_($form['name']); ?>" placeholder="example.net" required autocomplete="off">
+                    <input id="ncm-name" name="name" class="form-control" value="<?php echo $this->Html->safe($form['name']); ?>" placeholder="example.net" required autocomplete="off">
                     <button type="submit" class="btn btn-primary"><?php $this->_('NamecraneMail.domain_aliases.add'); ?></button>
                 <?php $this->Form->end(); ?>
             </div>
@@ -39,7 +39,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                     <tbody>
                         <?php foreach ($domain_aliases as $alias) { ?>
                             <tr>
-                                <td><strong><?php $this->Html->_($alias); ?></strong></td>
+                                <td><strong><?php echo $this->Html->safe($alias); ?></strong></td>
                                 <td>
                                     <div class="ncm-row-actions">
                                         <?php

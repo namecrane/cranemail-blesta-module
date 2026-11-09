@@ -55,11 +55,11 @@ $groups = $module->groups ?? [];
                             $key = (string) ($row->meta->api_key ?? '');
                         ?>
                             <tr>
-                                <td><?php $this->Html->_($row->meta->server_name ?? ''); ?></td>
+                                <td><?php echo $this->Html->safe($row->meta->server_name ?? ''); ?></td>
                                 <td><?php echo !empty($row->meta->service_id) ? '#' . $this->Html->safe($row->meta->service_id) : '<span class="text-muted">' . $this->_('NamecraneMail.manage.service_id_any', true) . '</span>'; ?></td>
-                                <td><code><?php $this->Html->_($key === '' ? '' : substr($key, 0, 8) . '…'); ?></code></td>
+                                <td><code><?php echo $this->Html->safe($key === '' ? '' : substr($key, 0, 8) . '…'); ?></code></td>
                                 <td>
-                                    <a href="<?php $this->Html->_($this->base_uri . 'settings/company/modules/editrow/' . $module->id . '/' . $row->id . '/'); ?>" class="btn btn-sm btn-outline-secondary" title="<?php $this->_('NamecraneMail.manage.module_rows.edit'); ?>">
+                                    <a href="<?php echo $this->Html->safe($this->base_uri . 'settings/company/modules/editrow/' . $module->id . '/' . $row->id . '/'); ?>" class="btn btn-sm btn-outline-secondary" title="<?php $this->_('NamecraneMail.manage.module_rows.edit'); ?>">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <?php
@@ -67,7 +67,7 @@ $groups = $module->groups ?? [];
                                     $this->Form->fieldHidden('id', $module->id);
                                     $this->Form->fieldHidden('row_id', $row->id);
                                     ?>
-                                    <button type="button" class="btn btn-sm btn-outline-danger modal-confirm-delete" data-confirm-message="<?php $this->Html->_($this->_('NamecraneMail.manage.module_rows.confirm_delete', true)); ?>" title="<?php $this->_('NamecraneMail.manage.module_rows.delete'); ?>">
+                                    <button type="button" class="btn btn-sm btn-outline-danger modal-confirm-delete" data-confirm-message="<?php echo $this->Html->safe($this->_('NamecraneMail.manage.module_rows.confirm_delete', true)); ?>" title="<?php $this->_('NamecraneMail.manage.module_rows.delete'); ?>">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                     <?php $this->Form->end(); ?>
@@ -98,10 +98,10 @@ $groups = $module->groups ?? [];
                     <tbody>
                         <?php foreach ($groups as $group) { ?>
                             <tr>
-                                <td><?php $this->Html->_($group->name ?? ''); ?></td>
+                                <td><?php echo $this->Html->safe($group->name ?? ''); ?></td>
                                 <td><?php echo count($group->rows ?? []); ?></td>
                                 <td>
-                                    <a href="<?php $this->Html->_($this->base_uri . 'settings/company/modules/editgroup/' . $module->id . '/' . $group->id . '/'); ?>" class="btn btn-sm btn-outline-secondary" title="<?php $this->_('NamecraneMail.manage.module_groups.edit'); ?>">
+                                    <a href="<?php echo $this->Html->safe($this->base_uri . 'settings/company/modules/editgroup/' . $module->id . '/' . $group->id . '/'); ?>" class="btn btn-sm btn-outline-secondary" title="<?php $this->_('NamecraneMail.manage.module_groups.edit'); ?>">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <?php
@@ -109,7 +109,7 @@ $groups = $module->groups ?? [];
                                     $this->Form->fieldHidden('id', $module->id);
                                     $this->Form->fieldHidden('group_id', $group->id);
                                     ?>
-                                    <button type="button" class="btn btn-sm btn-outline-danger modal-confirm-delete" data-confirm-message="<?php $this->Html->_($this->_('NamecraneMail.manage.module_groups.confirm_delete', true)); ?>" title="<?php $this->_('NamecraneMail.manage.module_groups.delete'); ?>">
+                                    <button type="button" class="btn btn-sm btn-outline-danger modal-confirm-delete" data-confirm-message="<?php echo $this->Html->safe($this->_('NamecraneMail.manage.module_groups.confirm_delete', true)); ?>" title="<?php $this->_('NamecraneMail.manage.module_groups.delete'); ?>">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                     <?php $this->Form->end(); ?>

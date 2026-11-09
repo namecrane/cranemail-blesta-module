@@ -37,7 +37,7 @@ $statuses = [
         <div class="card ncm-card">
             <div class="card-header">
                 <h3 class="ncm-card-title">
-                    <?php $this->Html->_($domain['domain']); ?>
+                    <?php echo $this->Html->safe($domain['domain']); ?>
                     <span class="badge badge-<?php echo $status_color; ?> bg-<?php echo $status_color; ?> ncm-status"><?php $this->_($status_label); ?></span>
                 </h3>
             </div>
@@ -50,15 +50,15 @@ $statuses = [
                             <tbody>
                                 <tr>
                                     <td>TXT</td>
-                                    <td><code class="ncm-copy"><?php $this->Html->_($domain['verification']['host']); ?></code></td>
-                                    <td><code class="ncm-copy ncm-wrap"><?php $this->Html->_($domain['verification']['value']); ?></code></td>
+                                    <td><code class="ncm-copy"><?php echo $this->Html->safe($domain['verification']['host']); ?></code></td>
+                                    <td><code class="ncm-copy ncm-wrap"><?php echo $this->Html->safe($domain['verification']['value']); ?></code></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 <?php } elseif ($domain['status'] === 'active') { ?>
                     <div class="ncm-actions">
-                        <a href="<?php $this->Html->_($login_url); ?>" target="_blank" rel="noopener" class="btn btn-primary"><?php $this->_('NamecraneMail.overview.open_webmail'); ?></a>
+                        <a href="<?php echo $this->Html->safe($login_url); ?>" target="_blank" rel="noopener" class="btn btn-primary"><?php $this->_('NamecraneMail.overview.open_webmail'); ?></a>
                         <?php if ($mxfilter_login) {
                             $this->Form->create($tab_url, ['target' => '_blank', 'class' => 'ncm-inline']);
                             $this->Form->fieldHidden('op', 'mxfilter_login');
@@ -83,7 +83,7 @@ $statuses = [
                             <?php foreach ($usage as [$label, $used, $of]) { ?>
                                 <tr>
                                     <td><?php $this->_($label); ?></td>
-                                    <td class="ncm-right"><?php $this->Html->_($used); ?> <span class="ncm-muted"><?php $this->_('NamecraneMail.usage.of', false, $this->Html->safe($of)); ?></span></td>
+                                    <td class="ncm-right"><?php echo $this->Html->safe($used); ?> <span class="ncm-muted"><?php $this->_('NamecraneMail.usage.of', false, $this->Html->safe($of)); ?></span></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -110,8 +110,8 @@ $statuses = [
                 <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.overview.sign_in'); ?></h3></div>
                 <table class="table">
                     <tbody>
-                        <tr><td><?php $this->_('NamecraneMail.overview.webmail_address'); ?></td><td><?php $this->Html->_($login_url); ?></td></tr>
-                        <tr><td><?php $this->_('NamecraneMail.service_fields.username'); ?></td><td><code class="ncm-copy"><?php $this->Html->_($service_fields->namecrane_mail_username); ?></code></td></tr>
+                        <tr><td><?php $this->_('NamecraneMail.overview.webmail_address'); ?></td><td><?php echo $this->Html->safe($login_url); ?></td></tr>
+                        <tr><td><?php $this->_('NamecraneMail.service_fields.username'); ?></td><td><code class="ncm-copy"><?php echo $this->Html->safe($service_fields->namecrane_mail_username); ?></code></td></tr>
                         <?php if (!empty($service_fields->namecrane_mail_password)) { ?>
                             <tr>
                                 <td><?php $this->_('NamecraneMail.service_fields.password'); ?></td>
@@ -140,9 +140,9 @@ $statuses = [
                     <tbody>
                         <?php foreach ($domain['dns_records'] ?? [] as $record) { ?>
                             <tr>
-                                <td><?php $this->Html->_($record['type']); ?></td>
-                                <td><code class="ncm-copy"><?php $this->Html->_($record['name']); ?></code></td>
-                                <td><code class="ncm-copy ncm-wrap"><?php $this->Html->_($record['content']); ?></code></td>
+                                <td><?php echo $this->Html->safe($record['type']); ?></td>
+                                <td><code class="ncm-copy"><?php echo $this->Html->safe($record['name']); ?></code></td>
+                                <td><code class="ncm-copy ncm-wrap"><?php echo $this->Html->safe($record['content']); ?></code></td>
                             </tr>
                         <?php } ?>
                     </tbody>

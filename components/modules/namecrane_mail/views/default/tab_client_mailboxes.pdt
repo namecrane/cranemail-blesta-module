@@ -15,7 +15,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
 ?>
 <div class="ncm">
     <?php if ($list_error) { ?>
-        <div class="alert alert-info"><?php $this->Html->_($list_error); ?></div>
+        <div class="alert alert-info"><?php echo $this->Html->safe($list_error); ?></div>
     <?php } elseif ($domain) { ?>
         <div class="card ncm-card">
             <div class="card-header">
@@ -33,13 +33,13 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                     <div class="col-md-6 ncm-field">
                         <label for="ncm-name"><?php $this->_('NamecraneMail.mailboxes.address'); ?></label>
                         <div class="ncm-address">
-                            <input id="ncm-name" name="name" class="form-control" value="<?php $this->Html->_($form['name']); ?>" <?php echo $editing ? 'disabled' : 'required'; ?> autocomplete="off">
-                            <span>@<?php $this->Html->_($domain_name); ?></span>
+                            <input id="ncm-name" name="name" class="form-control" value="<?php echo $this->Html->safe($form['name']); ?>" <?php echo $editing ? 'disabled' : 'required'; ?> autocomplete="off">
+                            <span>@<?php echo $this->Html->safe($domain_name); ?></span>
                         </div>
                     </div>
                     <div class="col-md-6 ncm-field">
                         <label for="ncm-display-name"><?php $this->_('NamecraneMail.mailboxes.display_name'); ?></label>
-                        <input id="ncm-display-name" name="display_name" class="form-control" value="<?php $this->Html->_($form['display_name']); ?>" maxlength="255">
+                        <input id="ncm-display-name" name="display_name" class="form-control" value="<?php echo $this->Html->safe($form['display_name']); ?>" maxlength="255">
                     </div>
                 </div>
                 <div class="row">
@@ -57,7 +57,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                     </div>
                     <div class="col-md-6 ncm-field">
                         <label for="ncm-quota"><?php $this->_('NamecraneMail.mailboxes.quota'); ?></label>
-                        <input id="ncm-quota" name="disk_limit" type="number" min="0" class="form-control" value="<?php $this->Html->_($form['disk_limit']); ?>">
+                        <input id="ncm-quota" name="disk_limit" type="number" min="0" class="form-control" value="<?php echo $this->Html->safe($form['disk_limit']); ?>">
                         <p class="ncm-help"><?php $this->_('NamecraneMail.mailboxes.quota_help'); ?></p>
                     </div>
                 </div>
@@ -68,7 +68,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                 <div class="ncm-form-actions">
                     <button type="submit" class="btn btn-primary"><?php $this->_($editing ? 'NamecraneMail.mailboxes.save' : 'NamecraneMail.mailboxes.add'); ?></button>
                     <?php if ($editing) { ?>
-                        <a href="<?php $this->Html->_($tab_url); ?>" class="btn btn-light"><?php $this->_('NamecraneMail.cancel'); ?></a>
+                        <a href="<?php echo $this->Html->safe($tab_url); ?>" class="btn btn-light"><?php $this->_('NamecraneMail.cancel'); ?></a>
                     <?php } ?>
                 </div>
                 <?php $this->Form->end(); ?>
@@ -89,7 +89,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                             ?>
                                 <tr>
                                     <td>
-                                        <strong><?php $this->Html->_($address); ?></strong>
+                                        <strong><?php echo $this->Html->safe($address); ?></strong>
                                         <?php if (!empty($mailbox['primary_admin'])) { ?>
                                             <span class="badge badge-info bg-info"><?php $this->_('NamecraneMail.mailboxes.primary_admin'); ?></span>
                                         <?php } elseif (!empty($mailbox['admin'])) { ?>
@@ -99,7 +99,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                                             <span class="badge badge-warning bg-warning"><?php $this->_('NamecraneMail.mailboxes.disabled'); ?></span>
                                         <?php } ?>
                                     </td>
-                                    <td><?php $this->Html->_($mailbox['display_name'] ?? ''); ?></td>
+                                    <td><?php echo $this->Html->safe($mailbox['display_name'] ?? ''); ?></td>
                                     <td class="ncm-nowrap"><?php echo !empty($mailbox['disk_limit'])
                                         ? $this->_('NamecraneMail.mailboxes.usage_of', true, $this->Html->safe($mailbox['disk_usage']), $this->Html->safe($mailbox['disk_limit']))
                                         : '<span class="ncm-muted">' . $this->_('NamecraneMail.mailboxes.domain_limit', true) . '</span>'; ?></td>
@@ -114,7 +114,7 @@ include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
                                             <?php
                                                 $this->Form->end();
                                             } ?>
-                                            <a href="<?php $this->Html->_($tab_url . '?edit=' . rawurlencode($mailbox['username'])); ?>" class="btn btn-light btn-sm"><?php $this->_('NamecraneMail.edit'); ?></a>
+                                            <a href="<?php echo $this->Html->safe($tab_url . '?edit=' . rawurlencode($mailbox['username'])); ?>" class="btn btn-light btn-sm"><?php $this->_('NamecraneMail.edit'); ?></a>
                                             <?php if (empty($mailbox['primary_admin'])) {
                                                 $this->Form->create($tab_url, ['class' => 'ncm-inline', 'data-ncm-confirm' => $this->_('NamecraneMail.mailboxes.confirm_delete', true, $address)]);
                                                 $this->Form->fieldHidden('op', 'delete');

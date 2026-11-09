@@ -30,20 +30,20 @@ $statuses = [
             <table class="table table-sm">
                 <tbody>
                     <tr><td class="w-50"><?php $this->_('NamecraneMail.admin.status'); ?></td><td><span class="badge bg-<?php echo $status_color; ?><?php echo $status_color === 'warning' ? ' text-dark' : ''; ?>"><?php $this->_($status_label); ?></span></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.usage.storage'); ?></td><td><?php $this->Html->_($of(round($domain['disk_usage'] / 1024, 2), $domain['disk_limit'], ' GB')); ?></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.usage.mailboxes'); ?></td><td><?php $this->Html->_($of($domain['user_count'], $domain['user_limit'])); ?></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.usage.aliases'); ?></td><td><?php $this->Html->_($of($domain['user_alias_count'], $domain['user_alias_limit'])); ?></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.usage.domain_aliases'); ?></td><td><?php $this->Html->_($of($domain['domain_alias_count'], $domain['domain_alias_limit'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.storage'); ?></td><td><?php echo $this->Html->safe($of(round($domain['disk_usage'] / 1024, 2), $domain['disk_limit'], ' GB')); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.mailboxes'); ?></td><td><?php echo $this->Html->safe($of($domain['user_count'], $domain['user_limit'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.aliases'); ?></td><td><?php echo $this->Html->safe($of($domain['user_alias_count'], $domain['user_alias_limit'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.domain_aliases'); ?></td><td><?php echo $this->Html->safe($of($domain['domain_alias_count'], $domain['domain_alias_limit'])); ?></td></tr>
                 </tbody>
             </table>
         </div>
         <div class="col-md-6">
             <table class="table table-sm">
                 <tbody>
-                    <tr><td class="w-50"><?php $this->_('NamecraneMail.feature.mxfilter'); ?></td><td><?php $this->Html->_($on($domain['mxfilter_enabled'])); ?></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.admin.storage_office'); ?></td><td><?php $this->Html->_($on($domain['file_storage']) . ' / ' . $on($domain['office'])); ?></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.feature.archiving'); ?></td><td><?php $this->Html->_($domain['archive_years'] ? $this->_('NamecraneMail.admin.archiving', true, $domain['archive_years'], $this->_('NamecraneMail.archive_direction.' . $domain['archive_direction'], true)) : $on(false)); ?></td></tr>
-                    <tr><td><?php $this->_('NamecraneMail.admin.sso'); ?></td><td><?php $this->Html->_($this->_('NamecraneMail.admin.sso_state', true, $this->_($domain['webmail_sso'] ? 'NamecraneMail.option.allowed' : 'NamecraneMail.option.turned_off', true), $this->_($domain['mxfilter_sso'] ? 'NamecraneMail.option.allowed' : 'NamecraneMail.option.turned_off', true))); ?></td></tr>
+                    <tr><td class="w-50"><?php $this->_('NamecraneMail.feature.mxfilter'); ?></td><td><?php echo $this->Html->safe($on($domain['mxfilter_enabled'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.admin.storage_office'); ?></td><td><?php echo $this->Html->safe($on($domain['file_storage']) . ' / ' . $on($domain['office'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.feature.archiving'); ?></td><td><?php echo $this->Html->safe($domain['archive_years'] ? $this->_('NamecraneMail.admin.archiving', true, $domain['archive_years'], $this->_('NamecraneMail.archive_direction.' . $domain['archive_direction'], true)) : $on(false)); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.admin.sso'); ?></td><td><?php echo $this->Html->safe($this->_('NamecraneMail.admin.sso_state', true, $this->_($domain['webmail_sso'] ? 'NamecraneMail.option.allowed' : 'NamecraneMail.option.turned_off', true), $this->_($domain['mxfilter_sso'] ? 'NamecraneMail.option.allowed' : 'NamecraneMail.option.turned_off', true))); ?></td></tr>
                 </tbody>
             </table>
         </div>
@@ -70,15 +70,15 @@ $statuses = [
                 <?php if (empty($domain['verified'])) { ?>
                     <tr class="table-warning">
                         <td>TXT</td>
-                        <td><code><?php $this->Html->_($domain['verification']['host']); ?></code></td>
-                        <td><code class="text-break"><?php $this->Html->_($domain['verification']['value']); ?></code><div class="small text-muted"><?php $this->_('NamecraneMail.admin.verification'); ?></div></td>
+                        <td><code><?php echo $this->Html->safe($domain['verification']['host']); ?></code></td>
+                        <td><code class="text-break"><?php echo $this->Html->safe($domain['verification']['value']); ?></code><div class="small text-muted"><?php $this->_('NamecraneMail.admin.verification'); ?></div></td>
                     </tr>
                 <?php } ?>
                 <?php foreach ($domain['dns_records'] ?? [] as $record) { ?>
                     <tr>
-                        <td><?php $this->Html->_($record['type']); ?></td>
-                        <td><code><?php $this->Html->_($record['name']); ?></code></td>
-                        <td><code class="text-break"><?php $this->Html->_($record['content']); ?></code></td>
+                        <td><?php echo $this->Html->safe($record['type']); ?></td>
+                        <td><code><?php echo $this->Html->safe($record['name']); ?></code></td>
+                        <td><code class="text-break"><?php echo $this->Html->safe($record['content']); ?></code></td>
                     </tr>
                 <?php } ?>
                 <tr>
