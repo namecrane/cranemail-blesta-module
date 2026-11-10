@@ -50,7 +50,7 @@ $statuses = [
     </div>
 
     <?php if ($mxfilter_login && !empty($domain['mxfilter_enabled']) && !empty($domain['mxfilter_sso']) && $domain['status'] === 'active') { ?>
-        <div class="mb-3">
+        <div class="mt-2 mb-4">
             <?php
             $this->Form->create($tab_url, ['target' => '_blank', 'class' => 'd-inline']);
             $this->Form->fieldHidden('op', 'mxfilter_login');

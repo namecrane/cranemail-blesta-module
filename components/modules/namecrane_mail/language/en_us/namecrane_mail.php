@@ -192,7 +192,7 @@ $lang['NamecraneMail.aliases.feature.all_users'] = 'Deliver to every mailbox';
 
 // Domain aliases
 $lang['NamecraneMail.domain_aliases.add_title'] = 'Add a Domain Alias';
-$lang['NamecraneMail.domain_aliases.intro'] = 'A domain alias gets the same mailboxes under another domain: with <strong>example.net</strong> as an alias, mail to jane@example.net reaches jane@%1$s. Point its MX records here like the main domain\'s.';
+$lang['NamecraneMail.domain_aliases.intro'] = 'A domain alias gets the same mailboxes under another domain: with <strong>example.net</strong> as an alias, mail to jane@example.net reaches jane@%1$s. Like the main domain, it needs a TXT record proving it\'s yours (you\'re shown it when you add it), and its MX records pointed here.';
 $lang['NamecraneMail.domain_aliases.add'] = 'Add Domain Alias';
 $lang['NamecraneMail.domain_aliases.remove'] = 'Remove';
 $lang['NamecraneMail.domain_aliases.confirm_delete'] = 'Remove %1$s? Mail to it stops arriving.';

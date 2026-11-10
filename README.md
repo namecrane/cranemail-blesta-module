@@ -65,6 +65,10 @@ a button to open MXFilter.
 the mailbox owner may open their mail. NameCrane then refuses those sign-ins for the domain
 everywhere, including in your NameCrane portal.
 
+Changing a package doesn't change its existing domains straight away (Blesta doesn't tell
+modules about package edits). A service picks up its package's settings when it's saved with
+**Use module** ticked or moved to another package.
+
 ## Order-time options (à la carte)
 
 Configurable options override the package's settings. Give each option the name below (the

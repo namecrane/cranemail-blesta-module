@@ -24,6 +24,7 @@
 .ncm .ncm-copy { user-select: all; }
 .ncm .ncm-wrap { word-break: break-all; }
 .ncm .ncm-mono { font-family: SFMono-Regular, Menlo, Consolas, monospace; }
+.ncm .form-control::placeholder { opacity: 0.5; }
 .ncm .ncm-icon { display: inline-block; width: 16px; height: 16px; vertical-align: -3px; }
 .ncm .ncm-records td { vertical-align: top; }
 .ncm .ncm-list td { vertical-align: middle; }

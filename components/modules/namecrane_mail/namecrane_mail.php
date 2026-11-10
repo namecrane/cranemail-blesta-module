@@ -28,6 +28,7 @@ class NamecraneMail extends Module
         Loader::loadComponents($this, ['Input']);
         Language::loadLang('namecrane_mail', null, __DIR__ . DS . 'language' . DS);
         Configure::load('namecrane_mail', __DIR__ . DS . 'config' . DS);
+        Loader::load(__DIR__ . DS . 'apis' . DS . 'namecrane_mail_api.php');
     }
 
     // Servers
@@ -1019,8 +1020,6 @@ class NamecraneMail extends Module
 
     private function client(string $api_key): NamecraneMailApi
     {
-        Loader::load(__DIR__ . DS . 'apis' . DS . 'namecrane_mail_api.php');
-
         return new NamecraneMailApi(
             $api_key,
             Configure::get('NamecraneMail.api_host'),
