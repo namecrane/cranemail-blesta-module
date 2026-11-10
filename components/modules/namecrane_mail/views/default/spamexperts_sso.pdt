@@ -1,5 +1,0 @@
-Redirecting to SpamExperts... 
-
-<script language="javascript">
-	window.location.href ="<?=$sso['url']?>";
-</script>

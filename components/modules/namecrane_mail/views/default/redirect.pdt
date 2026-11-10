@@ -1,0 +1,12 @@
+<?php
+/**
+ * Sends the browser on to a one-time sign-in address (webmail or MXFilter).
+ *
+ * @var string $url
+ * @var string $label
+ */
+?>
+<p><?php echo $this->Html->safe($label); ?> <a href="<?php echo $this->Html->safe($url); ?>" rel="noopener"><?php $this->_('NamecraneMail.redirect.continue'); ?></a></p>
+<script>
+    window.location.replace(<?php echo json_encode($url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES); ?>);
+</script>

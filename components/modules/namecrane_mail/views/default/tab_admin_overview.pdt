@@ -1,0 +1,92 @@
+<?php
+/**
+ * The NameCrane Mail tab on a service in the admin area.
+ *
+ * @var array|null $domain The API's domain details
+ * @var bool $mxfilter_login Whether the package lets staff open MXFilter without a password
+ * @var string $tab_url
+ */
+$statuses = [
+    'active' => ['NamecraneMail.status.active', 'success'],
+    'pending' => ['NamecraneMail.status.pending', 'warning'],
+    'suspended' => ['NamecraneMail.status.plan_suspended', 'danger'],
+    'client_suspended' => ['NamecraneMail.status.suspended', 'danger'],
+    'admin_suspended' => ['NamecraneMail.status.admin_suspended', 'danger'],
+];
+?>
+<?php if (!$domain) { ?>
+    <div class="alert alert-warning mb-0"><?php $this->_('NamecraneMail.overview.unavailable'); ?></div>
+<?php } else {
+    [$status_label, $status_color] = $statuses[$domain['status']] ?? ['NamecraneMail.status.unknown', 'secondary'];
+    $of = function ($used, $limit, $unit = '') {
+        return $this->_('NamecraneMail.usage.used_of', true, $used . $unit, $limit ? $limit . $unit : $this->_('NamecraneMail.usage.unlimited', true));
+    };
+    $on = function ($value) {
+        return $this->_($value ? 'NamecraneMail.feature.on' : 'NamecraneMail.feature.off', true);
+    };
+?>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-sm">
+                <tbody>
+                    <tr><td class="w-50"><?php $this->_('NamecraneMail.admin.status'); ?></td><td><span class="badge bg-<?php echo $status_color; ?><?php echo $status_color === 'warning' ? ' text-dark' : ''; ?>"><?php $this->_($status_label); ?></span></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.storage'); ?></td><td><?php echo $this->Html->safe($of(round($domain['disk_usage'] / 1024, 2), $domain['disk_limit'], ' GB')); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.mailboxes'); ?></td><td><?php echo $this->Html->safe($of($domain['user_count'], $domain['user_limit'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.aliases'); ?></td><td><?php echo $this->Html->safe($of($domain['user_alias_count'], $domain['user_alias_limit'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.usage.domain_aliases'); ?></td><td><?php echo $this->Html->safe($of($domain['domain_alias_count'], $domain['domain_alias_limit'])); ?></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-sm">
+                <tbody>
+                    <tr><td class="w-50"><?php $this->_('NamecraneMail.feature.mxfilter'); ?></td><td><?php echo $this->Html->safe($on($domain['mxfilter_enabled'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.admin.storage_office'); ?></td><td><?php echo $this->Html->safe($on($domain['file_storage']) . ' / ' . $on($domain['office'])); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.feature.archiving'); ?></td><td><?php echo $this->Html->safe($domain['archive_years'] ? $this->_('NamecraneMail.admin.archiving', true, $domain['archive_years'], $this->_('NamecraneMail.archive_direction.' . $domain['archive_direction'], true)) : $on(false)); ?></td></tr>
+                    <tr><td><?php $this->_('NamecraneMail.admin.sso'); ?></td><td><?php echo $this->Html->safe($this->_('NamecraneMail.admin.sso_state', true, $this->_($domain['webmail_sso'] ? 'NamecraneMail.option.allowed' : 'NamecraneMail.option.turned_off', true), $this->_($domain['mxfilter_sso'] ? 'NamecraneMail.option.allowed' : 'NamecraneMail.option.turned_off', true))); ?></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <?php if ($mxfilter_login && !empty($domain['mxfilter_enabled']) && !empty($domain['mxfilter_sso']) && $domain['status'] === 'active') { ?>
+        <div class="mt-2 mb-4">
+            <?php
+            $this->Form->create($tab_url, ['target' => '_blank', 'class' => 'd-inline']);
+            $this->Form->fieldHidden('op', 'mxfilter_login');
+            ?>
+                <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-box-arrow-up-right me-1"></i><?php $this->_('NamecraneMail.overview.mxfilter_login'); ?></button>
+            <?php $this->Form->end(); ?>
+        </div>
+    <?php } ?>
+
+    <h6 class="form-section-header"><?php $this->_('NamecraneMail.overview.dns_records'); ?></h6>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr><th><?php $this->_('NamecraneMail.dns.type'); ?></th><th><?php $this->_('NamecraneMail.dns.name'); ?></th><th><?php $this->_('NamecraneMail.dns.value'); ?></th></tr>
+            </thead>
+            <tbody>
+                <?php if (empty($domain['verified'])) { ?>
+                    <tr class="table-warning">
+                        <td>TXT</td>
+                        <td><code><?php echo $this->Html->safe($domain['verification']['host']); ?></code></td>
+                        <td><code class="text-break"><?php echo $this->Html->safe($domain['verification']['value']); ?></code><div class="small text-muted"><?php $this->_('NamecraneMail.admin.verification'); ?></div></td>
+                    </tr>
+                <?php } ?>
+                <?php foreach ($domain['dns_records'] ?? [] as $record) { ?>
+                    <tr>
+                        <td><?php echo $this->Html->safe($record['type']); ?></td>
+                        <td><code><?php echo $this->Html->safe($record['name']); ?></code></td>
+                        <td><code class="text-break"><?php echo $this->Html->safe($record['content']); ?></code></td>
+                    </tr>
+                <?php } ?>
+                <tr>
+                    <td>TXT</td>
+                    <td><code>@</code></td>
+                    <td><?php $this->_('NamecraneMail.admin.spf', false, $this->Html->safe($domain['spf_include'])); ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<?php } ?>

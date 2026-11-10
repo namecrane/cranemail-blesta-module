@@ -1,0 +1,153 @@
+<?php
+/**
+ * The client's overview of their email domain.
+ *
+ * @var array|null $domain The API's domain details
+ * @var string|null $login_url The webmail address
+ * @var bool $mxfilter_login Whether to offer the MXFilter panel
+ * @var stdClass $service_fields
+ * @var string $tab_url
+ */
+include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
+
+$statuses = [
+    'active' => ['NamecraneMail.status.active', 'success'],
+    'pending' => ['NamecraneMail.status.pending', 'warning'],
+];
+?>
+<div class="ncm">
+    <?php if (!$domain) { ?>
+        <div class="alert alert-warning"><?php $this->_('NamecraneMail.overview.unavailable'); ?></div>
+    <?php } else {
+        [$status_label, $status_color] = $statuses[$domain['status']] ?? ['NamecraneMail.status.suspended', 'danger'];
+        $limit = function ($limit, $unit = '') {
+            return $limit ? $limit . $unit : $this->_('NamecraneMail.usage.unlimited', true);
+        };
+        $usage = [
+            ['NamecraneMail.usage.storage', round($domain['disk_usage'] / 1024, 2) . ' GB', $limit($domain['disk_limit'], ' GB')],
+            ['NamecraneMail.usage.mailboxes', $domain['user_count'], $limit($domain['user_limit'])],
+            ['NamecraneMail.usage.aliases', $domain['user_alias_count'], $limit($domain['user_alias_limit'])],
+            ['NamecraneMail.usage.domain_aliases', $domain['domain_alias_count'], $limit($domain['domain_alias_limit'])],
+        ];
+        $on = function ($value) {
+            return $value ? $this->_('NamecraneMail.feature.on', true) : '<span class="ncm-muted">' . $this->_('NamecraneMail.feature.off', true) . '</span>';
+        };
+        $years = (int) $domain['archive_years'];
+    ?>
+        <div class="card ncm-card">
+            <div class="card-header">
+                <h3 class="ncm-card-title">
+                    <?php echo $this->Html->safe($domain['domain']); ?>
+                    <span class="badge badge-<?php echo $status_color; ?> bg-<?php echo $status_color; ?> ncm-status"><?php $this->_($status_label); ?></span>
+                </h3>
+            </div>
+            <div class="card-body">
+                <?php if ($domain['status'] === 'pending') { ?>
+                    <p><?php $this->_('NamecraneMail.overview.verify', false, $this->Html->safe($domain['domain'])); ?></p>
+                    <div class="ncm-scroll">
+                        <table class="table ncm-records">
+                            <thead><tr><th><?php $this->_('NamecraneMail.dns.type'); ?></th><th><?php $this->_('NamecraneMail.dns.name'); ?></th><th><?php $this->_('NamecraneMail.dns.value'); ?></th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td>TXT</td>
+                                    <td><code class="ncm-copy"><?php echo $this->Html->safe($domain['verification']['host']); ?></code></td>
+                                    <td><code class="ncm-copy ncm-wrap"><?php echo $this->Html->safe($domain['verification']['value']); ?></code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php } elseif ($domain['status'] === 'active') { ?>
+                    <div class="ncm-actions">
+                        <a href="<?php echo $this->Html->safe($login_url); ?>" target="_blank" rel="noopener" class="btn btn-primary"><?php $this->_('NamecraneMail.overview.open_webmail'); ?></a>
+                        <?php if ($mxfilter_login) {
+                            $this->Form->create($tab_url, ['target' => '_blank', 'class' => 'ncm-inline']);
+                            $this->Form->fieldHidden('op', 'mxfilter_login');
+                        ?>
+                            <button type="submit" class="btn btn-light"><?php $this->_('NamecraneMail.overview.mxfilter_login'); ?></button>
+                        <?php
+                            $this->Form->end();
+                        } ?>
+                    </div>
+                <?php } else { ?>
+                    <p class="mb-0"><?php $this->_('NamecraneMail.overview.suspended'); ?></p>
+                <?php } ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card ncm-card">
+                    <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.overview.usage'); ?></h3></div>
+                    <table class="table">
+                        <tbody>
+                            <?php foreach ($usage as [$label, $used, $of]) { ?>
+                                <tr>
+                                    <td><?php $this->_($label); ?></td>
+                                    <td class="ncm-right"><?php echo $this->Html->safe($used); ?> <span class="ncm-muted"><?php $this->_('NamecraneMail.usage.of', false, $this->Html->safe($of)); ?></span></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card ncm-card">
+                    <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.overview.features'); ?></h3></div>
+                    <table class="table">
+                        <tbody>
+                            <tr><td><?php $this->_('NamecraneMail.feature.mxfilter'); ?></td><td class="ncm-right"><?php echo $on($domain['mxfilter_enabled']); ?></td></tr>
+                            <tr><td><?php $this->_('NamecraneMail.feature.file_storage'); ?></td><td class="ncm-right"><?php echo $on($domain['file_storage']); ?></td></tr>
+                            <tr><td><?php $this->_('NamecraneMail.feature.office'); ?></td><td class="ncm-right"><?php echo $on($domain['office']); ?></td></tr>
+                            <tr><td><?php $this->_('NamecraneMail.feature.archiving'); ?></td><td class="ncm-right"><?php echo $years ? $this->_($years === 1 ? 'NamecraneMail.option.year' : 'NamecraneMail.option.years', true, $years) : $on(false); ?></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <?php if (!empty($service_fields->namecrane_mail_username)) { ?>
+            <div class="card ncm-card">
+                <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.overview.sign_in'); ?></h3></div>
+                <table class="table">
+                    <tbody>
+                        <tr><td><?php $this->_('NamecraneMail.overview.webmail_address'); ?></td><td><?php echo $this->Html->safe($login_url); ?></td></tr>
+                        <tr><td><?php $this->_('NamecraneMail.service_fields.username'); ?></td><td><code class="ncm-copy"><?php echo $this->Html->safe($service_fields->namecrane_mail_username); ?></code></td></tr>
+                        <?php if (!empty($service_fields->namecrane_mail_password)) { ?>
+                            <tr>
+                                <td><?php $this->_('NamecraneMail.service_fields.password'); ?></td>
+                                <td><?php
+                                    $password_id = 'ncm-admin-password';
+                                    $password_name = '';
+                                    $password_value = $service_fields->namecrane_mail_password;
+                                    $password_form = false;
+                                    include __DIR__ . DS . 'partials' . DS . 'password_field.pdt';
+                                ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } ?>
+
+        <div class="card ncm-card">
+            <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.overview.dns_records'); ?></h3></div>
+            <div class="card-body">
+                <p class="ncm-muted"><?php $this->_('NamecraneMail.overview.spf', false, $this->Html->safe($domain['spf_include'])); ?></p>
+            </div>
+            <div class="ncm-scroll">
+                <table class="table table-striped ncm-records">
+                    <thead><tr><th><?php $this->_('NamecraneMail.dns.type'); ?></th><th><?php $this->_('NamecraneMail.dns.name'); ?></th><th><?php $this->_('NamecraneMail.dns.value'); ?></th></tr></thead>
+                    <tbody>
+                        <?php foreach ($domain['dns_records'] ?? [] as $record) { ?>
+                            <tr>
+                                <td><?php echo $this->Html->safe($record['type']); ?></td>
+                                <td><code class="ncm-copy"><?php echo $this->Html->safe($record['name']); ?></code></td>
+                                <td><code class="ncm-copy ncm-wrap"><?php echo $this->Html->safe($record['content']); ?></code></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php } ?>
+</div>

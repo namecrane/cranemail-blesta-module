@@ -1,0 +1,26 @@
+<?php
+/**
+ * A server's fields, shared by the add and edit forms.
+ *
+ * @var stdClass $vars
+ */
+?>
+<div class="alert alert-info"><?php $this->_('NamecraneMail.row_meta.intro'); ?></div>
+
+<div class="mb-3">
+    <label for="server_name" class="form-label"><?php $this->_('NamecraneMail.row_meta.server_name'); ?></label>
+    <?php $this->Form->fieldText('server_name', $vars->server_name ?? null, ['id' => 'server_name', 'class' => 'form-control']); ?>
+    <div class="form-text"><?php $this->_('NamecraneMail.row_meta.tooltip.server_name'); ?></div>
+</div>
+
+<div class="mb-3">
+    <label for="api_key" class="form-label"><?php $this->_('NamecraneMail.row_meta.api_key'); ?></label>
+    <?php $this->Form->fieldPassword('api_key', ['id' => 'api_key', 'class' => 'form-control', 'value' => $vars->api_key ?? null, 'autocomplete' => 'off']); ?>
+    <div class="form-text"><?php $this->_('NamecraneMail.row_meta.tooltip.api_key'); ?></div>
+</div>
+
+<div class="mb-3">
+    <label for="service_id" class="form-label"><?php $this->_('NamecraneMail.row_meta.service_id'); ?></label>
+    <?php $this->Form->fieldText('service_id', $vars->service_id ?? null, ['id' => 'service_id', 'class' => 'form-control', 'inputmode' => 'numeric']); ?>
+    <div class="form-text"><?php $this->_('NamecraneMail.row_meta.tooltip.service_id'); ?></div>
+</div>

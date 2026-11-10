@@ -1,0 +1,63 @@
+<?php
+/**
+ * The client's domain aliases: the add form, then the list.
+ *
+ * @var array|null $domain
+ * @var array $domain_aliases
+ * @var string|null $list_error Why the list can't be shown yet
+ * @var array $form
+ * @var string $domain_name
+ * @var string $tab_url
+ */
+include __DIR__ . DS . 'partials' . DS . 'client_assets.pdt';
+?>
+<div class="ncm">
+    <?php if ($list_error) { ?>
+        <div class="alert alert-info"><?php echo $this->Html->safe($list_error); ?></div>
+    <?php } elseif ($domain) { ?>
+        <div class="card ncm-card">
+            <div class="card-header"><h3 class="ncm-card-title"><?php $this->_('NamecraneMail.domain_aliases.add_title'); ?></h3></div>
+            <div class="card-body">
+                <p class="ncm-help ncm-intro"><?php $this->_('NamecraneMail.domain_aliases.intro', false, $this->Html->safe($domain_name)); ?></p>
+                <?php
+                $this->Form->create($tab_url, ['class' => 'ncm-row-form']);
+                $this->Form->fieldHidden('op', 'create');
+                ?>
+                    <label for="ncm-name" class="sr-only visually-hidden"><?php $this->_('NamecraneMail.service_fields.domain'); ?></label>
+                    <input id="ncm-name" name="name" class="form-control" value="<?php echo $this->Html->safe($form['name']); ?>" placeholder="example.net" required autocomplete="off">
+                    <button type="submit" class="btn btn-primary"><?php $this->_('NamecraneMail.domain_aliases.add'); ?></button>
+                <?php $this->Form->end(); ?>
+            </div>
+        </div>
+
+        <div class="card ncm-card">
+            <div class="card-header">
+                <h3 class="ncm-card-title"><?php $this->_('NamecraneMail.tabs.domain_aliases'); ?> <span class="ncm-count"><?php $this->_('NamecraneMail.list.count', false, count($domain_aliases), $domain['domain_alias_limit'] ?: $this->_('NamecraneMail.usage.unlimited', true)); ?></span></h3>
+            </div>
+            <?php if ($domain_aliases) { ?>
+                <table class="table table-striped ncm-list">
+                    <tbody>
+                        <?php foreach ($domain_aliases as $alias) { ?>
+                            <tr>
+                                <td><strong><?php echo $this->Html->safe($alias); ?></strong></td>
+                                <td>
+                                    <div class="ncm-row-actions">
+                                        <?php
+                                        $this->Form->create($tab_url, ['class' => 'ncm-inline', 'data-ncm-confirm' => $this->_('NamecraneMail.domain_aliases.confirm_delete', true, $alias)]);
+                                        $this->Form->fieldHidden('op', 'delete');
+                                        $this->Form->fieldHidden('original', $alias);
+                                        ?>
+                                            <button type="submit" class="btn btn-danger btn-sm"><?php $this->_('NamecraneMail.domain_aliases.remove'); ?></button>
+                                        <?php $this->Form->end(); ?>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php } else { ?>
+                <div class="card-body"><p class="ncm-muted"><?php $this->_('NamecraneMail.domain_aliases.none'); ?></p></div>
+            <?php } ?>
+        </div>
+    <?php } ?>
+</div>

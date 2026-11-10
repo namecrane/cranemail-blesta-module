@@ -1,0 +1,23 @@
+<?php
+/**
+ * The service's line in Blesta's service lists, opened.
+ *
+ * @var stdClass $service_fields
+ */
+?>
+<div class="table-responsive">
+    <table class="table table-sm mb-0">
+        <thead>
+            <tr>
+                <th><?php $this->_('NamecraneMail.service_fields.domain'); ?></th>
+                <th><?php $this->_('NamecraneMail.service_fields.username'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo $this->Html->safe($service_fields->namecrane_mail_domain ?? ''); ?></td>
+                <td><?php echo $this->Html->safe($service_fields->namecrane_mail_username ?? ''); ?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
